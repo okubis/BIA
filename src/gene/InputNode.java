@@ -1,4 +1,4 @@
-package individual;
+package gene;
 
 public class InputNode extends Node {
 

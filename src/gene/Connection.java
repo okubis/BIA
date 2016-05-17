@@ -1,4 +1,4 @@
-package individual;
+package gene;
 
 import java.util.Random;
 

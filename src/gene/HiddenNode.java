@@ -1,6 +1,6 @@
-package individual;
+package gene;
 
-public class OutputNode extends Node {
+public class HiddenNode extends Node {
 
 	@Override
 	public boolean isInput() {
@@ -9,12 +9,12 @@ public class OutputNode extends Node {
 
 	@Override
 	public boolean isOutput() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isHidden() {
-		return false;
+		return true;
 	}
 
 }

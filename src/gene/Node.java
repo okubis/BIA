@@ -1,4 +1,4 @@
-package individual;
+package gene;
 
 public abstract class Node extends Gene {
 	public abstract boolean isInput();

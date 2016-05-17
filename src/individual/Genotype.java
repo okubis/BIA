@@ -1,5 +1,7 @@
 package individual;
 
+import gene.Gene;
+
 import java.util.ArrayList;
 
 public class Genotype {

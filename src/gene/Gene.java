@@ -1,7 +1,7 @@
 /**
  * 
  */
-package individual;
+package gene;
 
 /**
  * @author Eda
