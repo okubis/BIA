@@ -8,6 +8,7 @@ package com.layer;
  */
 public class InitData {
     // TODO: determine these values
+    // TODO: we might need some other values for init and removal of flight, so might this class might be expanded
     private static final double ALTITUDE = 0.0;
     private static final double LONGITUDE = 0.0;
     private static final double LATITUDE = 0.0;
@@ -17,35 +18,35 @@ public class InitData {
     private static final double SPEED = 0.0;
     private static final double YAW = 0.0;
 
-    public static double getInitialSPEED() {
+    protected static double getInitialSPEED() {
         return SPEED;
     }
 
-    public static double getInitialYAW() {
+    protected static double getInitialYAW() {
         return YAW;
     }
 
-    public static double getInitialALTITUDE() {
+    protected static double getInitialALTITUDE() {
         return ALTITUDE;
     }
 
-    public static double getInitialLONGITUDE() {
+    protected static double getInitialLONGITUDE() {
         return LONGITUDE;
     }
 
-    public static double getInitialLATITUDE() {
+    protected static double getInitialLATITUDE() {
         return LATITUDE;
     }
 
-    public static double getInitialROLL() {
+    protected static double getInitialROLL() {
         return ROLL;
     }
 
-    public static double getInitialPITCH() {
+    protected static double getInitialPITCH() {
         return PITCH;
     }
 
-    public static double getInitialHEADING() {
+    protected static double getInitialHEADING() {
         return HEADING;
     }
 }
