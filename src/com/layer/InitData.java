@@ -1,6 +1,9 @@
 package com.layer;
 
 /**
+ *
+ * Simple class for initial constant values
+ *
  * Created by okubis on 5/17/16.
  */
 public class InitData {
@@ -14,35 +17,35 @@ public class InitData {
     private static final double SPEED = 0.0;
     private static final double YAW = 0.0;
 
-    public static double getSPEED() {
+    public static double getInitialSPEED() {
         return SPEED;
     }
 
-    public static double getYAW() {
+    public static double getInitialYAW() {
         return YAW;
     }
 
-    public static synchronized double getALTITUDE() {
+    public static double getInitialALTITUDE() {
         return ALTITUDE;
     }
 
-    public static synchronized double getLONGITUDE() {
+    public static double getInitialLONGITUDE() {
         return LONGITUDE;
     }
 
-    public static synchronized double getLATITUDE() {
+    public static double getInitialLATITUDE() {
         return LATITUDE;
     }
 
-    public static synchronized double getROLL() {
+    public static double getInitialROLL() {
         return ROLL;
     }
 
-    public static synchronized double getPITCH() {
+    public static double getInitialPITCH() {
         return PITCH;
     }
 
-    public static synchronized double getHEADING() {
+    public static double getInitialHEADING() {
         return HEADING;
     }
 }
