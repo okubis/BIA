@@ -1,10 +1,12 @@
 package com.layer;
 
+import org.flightgear.fgfsclient.FGFSConnection;
+
 /**
  * Created by okubis on 5/17/16.
  */
 public class Toolbox {
-
+    private FGFSConnection fgfs;
 
     /**
      * method that will add plane to the sim. and set its initial position, speed etc.
