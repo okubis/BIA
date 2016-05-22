@@ -4,6 +4,7 @@ public abstract class Node extends Gene {
 	public abstract boolean isInput();
 	public abstract boolean isOutput();
 	public abstract boolean isHidden();
+	public abstract double function(double sum);
 	
 	@Override
 	public boolean isNode() {

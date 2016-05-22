@@ -3,12 +3,14 @@
  */
 package gene;
 
+import java.util.Random;
+
 /**
  * @author Eda
  *
  */
 public abstract class Gene {
-	private int mark;
+	protected int mark;
 	
 	public int getMark(){
 		return mark;
@@ -16,4 +18,5 @@ public abstract class Gene {
 	
 	public abstract boolean isNode();
 	public abstract boolean isConnection();
+	public abstract void mutate(Random rand);
 }
