@@ -7,8 +7,7 @@ package com.layer;
  * Created by okubis on 5/17/16.
  */
 public class InitData {
-    // TODO: determine these values
-    // TODO: we might need some other values for init and removal of flight, so might this class might be expanded
+    //NOTE:
     private static final double ALTITUDE = 0.0;
     private static final double LONGITUDE = 0.0;
     private static final double LATITUDE = 0.0;
