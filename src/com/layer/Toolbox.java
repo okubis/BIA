@@ -1,7 +1,7 @@
 package com.layer;
 
+import com.properties.*;
 import org.flightgear.fgfsclient.FGFSConnection;
-import org.flightgear.fgfsclient.PropertyPage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,7 +11,9 @@ import java.util.HashMap;
  */
 public class Toolbox extends AbstractToolbox {
     private FGFSConnection fgfs;
-    private HashMap pages;
+    private HashMap<Property, AbstractPropertyManager> properties;
+
+
 
     /**
      * method that will add plane to the sim. and set its initial position, speed etc.
@@ -28,80 +30,43 @@ public class Toolbox extends AbstractToolbox {
             ioe.printStackTrace();
             return false;
         }
-        initPages();
+        initProperties();
 
-        // TODO: Implement the rest
-
+        for(Property p : Property.values()){
+            try {
+                properties.get(p).retrieveValue(fgfs);
+            } catch (IOException e) {
+                //TODO: DETERMINE HOW TO HADLE THIS EXCEPTION
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+        }
         return true;
     }
 
-    private void initPages() {
+    private void initProperties() {
+        this.properties = new HashMap();
 
-        /*
-        this.pages = new HashMap();
-        PropertyPage page = new PropertyPage(this.fgfs, "Simulation");
-        page.addField("/sim/aircraft", "Aircraft:");
-        page.addField("/sim/startup/airport-id", "Airport ID:");
-        page.addField("/sim/time/gmt", "Current time (GMT):");
-        page.addField("/sim/startup/trim", "Trim on ground (true/false):");
-        page.addField("/sim/sound/audible", "Sound enabled (true/false):");
-        page.addField("/sim/startup/browser-app", "Web browser:");
-        this.addPage(page);
+        // add control managers
+        addDoubleManager("/controls/flight/aileron",Property.AILERON);
+        addDoubleManager("/controls/flight/elevator",Property.ELEVATOR);
+        addDoubleManager("/controls/flight/rudder",Property.RUDDER);
 
+        // add position data managers
+        addDoubleManager("/position/latitude-deg",Property.LATITUDE);
+        addDoubleManager("/position/longitude-deg",Property.LONGITUDE);
+        addDoubleManager("/position/altitude-ft",Property.ALTITUDE);
 
-        /position/latitude-deg
-        /position/longitude-deg
-        /position/altitude-ft
+        // add orientations managers
+        addDoubleManager("/orientation/roll-deg",Property.ROLL);
+        addDoubleManager("/orientation/pitch-deg",Property.PITCH);
+        addDoubleManager("/orientation/heading-deg",Property.YAW);
+    }
 
-
-        page = new PropertyPage(this.fgfs, "View");
-        page.addField("/sim/view-mode", "View mode:");
-        page.addField("/sim/current-view/field-of-view", "Field of view (deg):");
-        page.addField("/sim/current-view/pitch-offset-deg", "View pitch offset (deg):");
-        page.addField("/sim/current-view/heading-offset-deg", "View heading offset (deg):");
-        this.addPage(page);
-        page = new PropertyPage(this.fgfs, "Location");
-        page.addField("/position/altitude-ft", "Altitude (ft):");
-        page.addField("/position/longitude-deg", "Longitude (deg):");
-        page.addField("/position/latitude-deg", "Latitude (deg):");
-        page.addField("/orientation/roll-deg", "Roll (deg):");
-        page.addField("/orientation/pitch-deg", "Pitch (deg):");
-        page.addField("/orientation/heading-deg", "Heading (deg):");
-        this.addPage(page);
-        page = new PropertyPage(this.fgfs, "Weather");
-        page.addField("/environment/wind-from-heading-deg", "Wind direction (deg FROM):");
-        page.addField("/environment/params/base-wind-speed-kt", "Wind speed (kt):");
-        page.addField("/environment/params/gust-wind-speed-kt", "Maximum gust (kt):");
-        page.addField("/environment/wind-from-down-fps", "Updraft (fps):");
-        page.addField("/environment/temperature-degc", "Temperature (degC):");
-        page.addField("/environment/dewpoint-degc", "Dewpoint (degC):");
-        page.addField("/environment/pressure-sea-level-inhg", "Altimeter setting (inHG):");
-        this.addPage(page);
-        page = new PropertyPage(this.fgfs, "Clouds");
-        page.addField("/environment/clouds/layer[0]/type", "Layer 0 type:");
-        page.addField("/environment/clouds/layer[0]/elevation-ft", "Layer 0 height (ft):");
-        page.addField("/environment/clouds/layer[0]/thickness-ft", "Layer 0 thickness (ft):");
-        page.addField("/environment/clouds/layer[1]/type", "Layer 1 type:");
-        page.addField("/environment/clouds/layer[1]/elevation-ft", "Layer 1 height (ft):");
-        page.addField("/environment/clouds/layer[1]/thickness-ft", "Layer 1 thickness (ft):");
-        page.addField("/environment/clouds/layer[2]/type", "Layer 2 type:");
-        page.addField("/environment/clouds/layer[2]/elevation-ft", "Layer 2 height (ft):");
-        page.addField("/environment/clouds/layer[2]/thickness-ft", "Layer 2 thickness (ft):");
-        page.addField("/environment/clouds/layer[3]/type", "Layer 3 type:");
-        page.addField("/environment/clouds/layer[3]/elevation-ft", "Layer 3 height (ft):");
-        page.addField("/environment/clouds/layer[3]/thickness-ft", "Layer 3 thickness (ft):");
-        page.addField("/environment/clouds/layer[4]/type", "Layer 4 type:");
-        page.addField("/environment/clouds/layer[4]/elevation-ft", "Layer 4 height (ft):");
-        page.addField("/environment/clouds/layer[4]/thickness-ft", "Layer 4 thickness (ft):");
-        this.addPage(page);
-        page = new PropertyPage(this.fgfs, "Velocities");
-        page.addField("/velocities/airspeed-kt", "Airspeed (kt):");
-        page.addField("/velocities/speed-down-fps", "Descent speed (fps):");
-        this.addPage(page);
-        this.getContentPane().add(this.tabs);
-        (new Thread(new FGFSDemo.Updater())).start();
-        /*
-        */
+    private void addDoubleManager(String name, Property caption){
+        DoublePropertyManager dpm = new DoublePropertyManager(name, caption);
+        this.properties.put(caption,dpm);
     }
 
     /**
@@ -114,6 +79,7 @@ public class Toolbox extends AbstractToolbox {
 
         // end the connection
         try {
+            //TODO: IF CONNECTION IS TO BE REUSED DO NOT CLOSE IT...
             fgfs.close();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -143,8 +109,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getAltitude(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.ALTITUDE);
     }
 
     /**
@@ -153,8 +118,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getLatitude(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.LATITUDE);
     }
 
     /**
@@ -163,8 +127,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getLongitude(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.LONGITUDE);
     }
 
     /**
@@ -173,8 +136,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getRoll(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.ROLL);
     }
 
     /**
@@ -183,8 +145,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getPitch(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.PITCH);
     }
 
     /**
@@ -193,8 +154,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getYaw(){
-        // TODO: Implement
-        return 0.0;
+        return getDoubleProperty(Property.YAW);
     }
 
     /**
@@ -203,8 +163,8 @@ public class Toolbox extends AbstractToolbox {
      * @return current status of Aileron
      */
     @Override
-    public double getAileronStatus() {
-        return 0;
+    public double getAileronStatus(){
+        return getDoubleProperty(Property.AILERON);
     }
 
     /**
@@ -213,8 +173,8 @@ public class Toolbox extends AbstractToolbox {
      * @return current status of Elevators
      */
     @Override
-    public double getElevatorsStatus() {
-        return 0;
+    public double getElevatorStatus() {
+        return getDoubleProperty(Property.ELEVATOR);
     }
 
     /**
@@ -224,7 +184,7 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getRudderStatus() {
-        return 0;
+        return getDoubleProperty(Property.RUDDER);
     }
 
     /**
@@ -232,15 +192,15 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public void setAileron(double aileronInput){
-        // TODO: Implement
+        setDoubleProperty(Property.AILERON , aileronInput);
     }
 
     /**
      *  method that controls PITCH by setting value for elevators
      */
     @Override
-    public void setElevators(double elevatorsInput){
-        // TODO: Implement
+    public void setElevator(double elevatorInput){
+        setDoubleProperty(Property.ELEVATOR , elevatorInput);
     }
 
     /**
@@ -248,7 +208,69 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public void setRudder(double rudderInput){
-        // TODO: Implement
+        setDoubleProperty(Property.RUDDER , rudderInput);
+    }
+
+
+    private double getDoubleProperty(Property p){
+        DoublePropertyManager dpm = (DoublePropertyManager) properties.get(p);
+        Double value = null;
+        try {
+            value = dpm.retrieveValue(fgfs);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
+        return value;
+    }
+
+    private void setDoubleProperty(Property p , double value){
+        DoublePropertyManager dpm = (DoublePropertyManager) properties.get(p);
+        try {
+            dpm.updateValue(fgfs,value);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
+    }
+
+    private String getStringProperty(Property p){
+        StringPropertyManager spm = (StringPropertyManager) properties.get(p);
+        String value = null;
+        try {
+            value = spm.retrieveValue(fgfs);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
+        return value;
+    }
+
+    private void setStringProperty(Property p , String value){
+        StringPropertyManager spm = (StringPropertyManager) properties.get(p);
+        try {
+            spm.updateValue(fgfs,value);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
+    }
+
+    private Boolean getBooleanProperty(Property p){
+
+        BooleanPropertyManager bpm = (BooleanPropertyManager) properties.get(p);
+        Boolean value = null;
+        try {
+            value = bpm.retrieveValue(fgfs);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
+        return value;
+    }
+
+    private void setBooleanProperty(Property p , Boolean value){
+        BooleanPropertyManager bpm = (BooleanPropertyManager) properties.get(p);
+        try {
+            bpm.updateValue(fgfs,value);
+        } catch (IOException e) {
+            //TODO: DETERMINE HOW TO HADLE THIS
+        }
     }
 
 }

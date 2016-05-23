@@ -7,7 +7,7 @@ package com.layer;
  * Created by okubis on 5/17/16.
  */
 public class InitData {
-    //NOTE:
+    //TODO: MOST LIKELY THIS CLASS WILL NOT BE USED, AND THUS I WILL PROBABLY DELETE IT IN THE NOT SO DISTANT FUTURE
     private static final double ALTITUDE = 0.0;
     private static final double LONGITUDE = 0.0;
     private static final double LATITUDE = 0.0;

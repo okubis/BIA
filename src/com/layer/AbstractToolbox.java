@@ -1,5 +1,7 @@
 package com.layer;
 
+import java.io.IOException;
+
 /**
  * Created by okubis on 5/23/16.
  */
@@ -66,14 +68,14 @@ public abstract class AbstractToolbox {
      *
      * @return current status of Aileron
      */
-    public abstract double getAileronStatus();
+    public abstract double getAileronStatus() throws IOException;
 
     /**
      * Method that returns current status of Elevators
      *
      * @return current status of Elevators
      */
-    public abstract double getElevatorsStatus();
+    public abstract double getElevatorStatus();
 
     /**
      * Method that returns current status of Rudder
@@ -90,7 +92,7 @@ public abstract class AbstractToolbox {
     /**
      *  method that controls PITCH by setting value for elevators
      */
-    public abstract void setElevators(double elevatorsInput);
+    public abstract void setElevator(double elevatorsInput);
 
     /**
      *  method that controls YAW by setting value for rudder
