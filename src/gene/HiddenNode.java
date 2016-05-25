@@ -6,9 +6,10 @@ public class HiddenNode extends Node {
 
 	private double sigmoidParam;
 	
-	public HiddenNode(double sigmoidParam, int mark) {
+	public HiddenNode(double sigmoidParam, int mark, int index) {
 		this.sigmoidParam = sigmoidParam;
 		this.mark = mark;
+		this.index = index;
 	}
 	
 	@Override
@@ -32,9 +33,19 @@ public class HiddenNode extends Node {
 		return 1/(1 + Math.pow(Math.E, -sigmoidParam*sum));
 	}
 
+	public double getSigmoidParam() {
+		return sigmoidParam;
+	}
+
 	@Override
 	public void mutate(Random rand) {
 		this.sigmoidParam += rand.nextGaussian();
+	}
+
+	@Override
+	public Node clone() {
+		// TODO Auto-generated method stub
+		return new HiddenNode(sigmoidParam, mark, index);
 	}
 
 }

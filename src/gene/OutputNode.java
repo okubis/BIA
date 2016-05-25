@@ -9,8 +9,9 @@ public class OutputNode extends Node {
 	
 	
 	
-	public OutputNode(double sigmoidParam) {
+	public OutputNode(double sigmoidParam, int index) {
 		this.sigmoidParam = sigmoidParam;
+		this.index = index;
 	}
 
 	@Override
@@ -37,6 +38,12 @@ public class OutputNode extends Node {
 	@Override
 	public void mutate(Random rand) {
 		this.sigmoidParam += rand.nextGaussian();
+	}
+
+	@Override
+	public Node clone() {
+		// TODO Auto-generated method stub
+		return new OutputNode(sigmoidParam, index);
 	}
 	
 }

@@ -4,11 +4,12 @@ import java.util.Random;
 
 public class InputNode extends Node {
 
-	public static final int INPUTS_COUNT = 3;
-	private static double sigmoidParam;
+	public static final int INPUTS_COUNT = 9;
+	private double sigmoidParam;
 	
-	public InputNode(double sigmoidParam) {
+	public InputNode(double sigmoidParam, int index) {
 		this.sigmoidParam = sigmoidParam;
+		this.index = index;
 	}
 	
 	@Override
@@ -36,6 +37,16 @@ public class InputNode extends Node {
 	public void mutate(Random rand) {
 		sigmoidParam += rand.nextGaussian();
 		
+	}
+
+	@Override
+	public Node clone() {
+		// TODO Auto-generated method stub
+		return new InputNode(sigmoidParam, index);
+	}
+
+	public double getSigmoidParam() {
+		return sigmoidParam;
 	}
 
 }

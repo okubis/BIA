@@ -1,12 +1,10 @@
 package individual;
 
-import gene.Connection;
-import gene.Gene;
-import gene.HiddenNode;
-import gene.InputNode;
-import gene.OutputNode;
+import gene.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 public class Genotype {
 	private ArrayList<Gene> genotype;
@@ -23,27 +21,102 @@ public class Genotype {
 	
 	public Genotype(){
 		genotype = new ArrayList<Gene>();
-		nodeCount = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT;
-		//TO DO, generate some connections
+		nodeCount = 0;
 	}
 	
-	public void addNode(HiddenNode node){
-		genotype.add(nodeCount++, node);
+	public Gene get(int index){
+		return genotype.get(index);
 	}
 	
-	public void addConnection(Connection con){
-		genotype.add(con);
+	public int getNodeCount() {
+		return nodeCount;
+	}
+
+	public boolean addNode(Node node){
+		if(getNodeByMark(node.getMark()) == null){
+			genotype.add(nodeCount++, node);
+			return true;
+		}
+		return false;
 	}
 	
-	public void removeConnection(Connection con){
-		genotype.remove(con);
+	public boolean addHiddenNodeAtIndex(HiddenNode node, int index){
+		if(getNodeByMark(node.getMark()) == null){
+			genotype.add(index, node);
+			nodeCount++;
+			return true;
+		}
+		return false;
 	}
 	
-	public void addHiddenNodeToConnection(Connection con, int mark){
-		genotype.remove(con);
-		HiddenNode inserted = new HiddenNode(1, mark);
-		addNode(inserted);
-		addConnection(new Connection(con.getStart(), inserted, mark, con.getWeight(), true));
-		addConnection(new Connection(inserted, con.getEnd(), mark, con.getWeight(), true));
+	public boolean addHiddenNode(HiddenNode node, Connection con){
+		int index = genotype.indexOf(con.getStart());
+		if(index >= 0 && genotype.indexOf(con.getEnd()) > index && getNodeByMark(node.getMark()) == null){
+			genotype.add(index + 1, node);
+			nodeCount++;
+			return true;
+		}
+		return false;
 	}
+	
+	public boolean addConnection(Connection con){
+		int indexEnd = genotype.indexOf(con.getEnd());
+		int indexStart = genotype.indexOf(con.getStart());
+		Node start = (Node) genotype.get(indexStart);
+		Node end = (Node) genotype.get(indexEnd);
+		if(indexStart >= 0 && indexEnd > indexStart && !start.isOutput() && !end.isInput()){
+			genotype.add(con);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean disableConnection(Connection con){
+		Connection c = (Connection) genotype.get(genotype.indexOf(con));
+		if(c != null){
+			c.disable();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean enableConnection(Connection con){
+		Connection c = (Connection) genotype.get(genotype.indexOf(con));
+		if(c != null){
+			c.enable();
+			return true;
+		}
+		return false;
+	}
+	
+	public Node getNodeByMark(int mark){
+		Node node = null;
+		for (int i = 0; i < nodeCount; i++) {
+			if(genotype.get(i).getMark() == mark){
+				node = (Node) genotype.get(i);
+				break;
+			}
+		}
+		return node;
+	}
+	
+	public Connection getConnectionByMark(int mark){
+		Connection con = null;
+		for (int i = nodeCount; i < getGenotypeSize(); i++) {
+			if(genotype.get(i).getMark() == mark){
+				con = (Connection) genotype.get(i);
+				break;
+			}
+		}
+		return con;
+	}
+	
+//	public void addHiddenNodeToConnection(Connection con, int nodeMark, int conMark1, int conMark2){
+//		if(disableConnection(con)){
+//			HiddenNode inserted = new HiddenNode(1, nodeMark, nodeCount);
+//			addNode(inserted);
+//			addConnection(new Connection(con.getStart(), nodeMark, conMark1, 1, true));
+//			addConnection(new Connection(nodeMark, con.getEnd(), conMark2, con.getWeight(), true));
+//		}
+//	}
 }
