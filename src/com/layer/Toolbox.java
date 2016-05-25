@@ -13,14 +13,15 @@ public class Toolbox extends AbstractToolbox {
     private FGFSConnection fgfs;
     private HashMap<Property, AbstractPropertyManager> properties;
 
-
-
     /**
      * method that will add plane to the sim. and set its initial position, speed etc.
      * @return  true if successful
      */
     @Override
     public boolean initFlight(SocketConnectionParameters socketParameters){
+
+        //TODO: INIT FLIGHTGEAR
+
         // init connection
         try {
             fgfs = new FGFSConnection(socketParameters.getHost(), socketParameters.getPort());
@@ -36,10 +37,7 @@ public class Toolbox extends AbstractToolbox {
             try {
                 properties.get(p).retrieveValue(fgfs);
             } catch (IOException e) {
-                //TODO: DETERMINE HOW TO HADLE THIS EXCEPTION
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-                return false;
+                exceptionHandler(e);
             }
         }
         return true;
@@ -57,15 +55,56 @@ public class Toolbox extends AbstractToolbox {
         addDoubleManager("/position/latitude-deg",Property.LATITUDE);
         addDoubleManager("/position/longitude-deg",Property.LONGITUDE);
         addDoubleManager("/position/altitude-ft",Property.ALTITUDE);
+        addDoubleManager("/velocities/airspeed-kt",Property.SPEED);
 
         // add orientations managers
         addDoubleManager("/orientation/roll-deg",Property.ROLL);
         addDoubleManager("/orientation/pitch-deg",Property.PITCH);
         addDoubleManager("/orientation/heading-deg",Property.YAW);
+
+        try {
+            System.out.println("Altitude: " + properties.get(Property.ALTITUDE).retrieveValue(fgfs));
+
+        System.out.println("Latitude: " + properties.get(Property.LATITUDE).retrieveValue(fgfs));
+        System.out.println("Longitude: " + properties.get(Property.LONGITUDE).retrieveValue(fgfs));
+        System.out.println("Speed: " + properties.get(Property.SPEED).retrieveValue(fgfs));
+
+        System.out.println("Roll: " + properties.get(Property.ROLL).retrieveValue(fgfs));
+        System.out.println("Pitch: " + properties.get(Property.PITCH).retrieveValue(fgfs));
+        System.out.println("Yaw: " + properties.get(Property.YAW).retrieveValue(fgfs));
+
+        System.out.println("controls: " + properties.get(Property.AILERON).retrieveValue(fgfs));
+        System.out.println("controls: " + properties.get(Property.ELEVATOR).retrieveValue(fgfs));
+        System.out.println("controls: " + properties.get(Property.RUDDER).retrieveValue(fgfs));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        setAltitude(InitData.getInitialALTITUDE());
+        setLatitude(InitData.getInitialLATITUDE());
+        setLongitude(InitData.getInitialLONGITUDE());
+     //   setSpeed(InitData.getInitialSPEED());
+
+        setRoll(InitData.getInitialROLL());
+        setPitch(InitData.getInitialPITCH());
+        setYaw(InitData.getInitialYAW());
+
+        setAileron(InitData.getInitialAILERON());
+        setElevator(InitData.getInitialELEVATOR());
+        setRudder(InitData.getInitialRUDDER());
     }
 
     private void addDoubleManager(String name, Property caption){
         DoublePropertyManager dpm = new DoublePropertyManager(name, caption);
+        this.properties.put(caption,dpm);
+    }
+    private void addStringManager(String name, Property caption){
+        StringPropertyManager dpm = new StringPropertyManager(name, caption);
+        this.properties.put(caption,dpm);
+    }
+    private void addBooleanManager(String name, Property caption){
+        BooleanPropertyManager dpm = new BooleanPropertyManager(name, caption);
         this.properties.put(caption,dpm);
     }
 
@@ -75,18 +114,16 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public boolean endFlight(){
-        // TODO: Implement the flight ending in the flight gear so that the plane does not exist
-
         // end the connection
         try {
-            //TODO: IF CONNECTION IS TO BE REUSED DO NOT CLOSE IT...
             fgfs.close();
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-            System.err.println(ioe.getCause());
-            ioe.printStackTrace();
+            exceptionHandler(ioe);
             return false;
         }
+
+        //TODO: END FLIGHTGEAR
+        
         return true;
     }
 
@@ -99,8 +136,19 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public double getPenalty(double altitude, double longitude, double latitude){
-        //TODO: implement , EDAs task :)
-        return 0.0;
+        // let us consider a line given by a point (initialAltitude, initialLongitude, initialLatitude) and vector (altitudeVector, longitudeVector, latitudeVector)
+        // We want to calculate the distance between the line and point (altitude, longitude, latitude)
+        double initialAltitude = InitData.getInitialALTITUDE();
+        double initialLongitude = InitData.getInitialLONGITUDE();
+        double initialLatitude = InitData.getInitialLATITUDE();
+        double altitudeVector = InitData.getAltitudeVector();
+        double longitudeVector = InitData.getLongitudeVector();
+        double latitudeVector = InitData.getLatitudeVector();
+        double x1 = altitude - initialAltitude;
+        double y1 = longitude - initialLongitude;
+        double z1 = latitude - initialLatitude;
+        double t = ( altitudeVector*x1 + longitudeVector*y1 + latitudeVector*z1 ) / (Math.pow(altitudeVector, 2) + Math.pow(longitudeVector, 2) + Math.pow(latitudeVector, 2));
+        return Math.sqrt(Math.pow(t*altitudeVector - x1, 2) + Math.pow(t*longitudeVector - y1, 2) + Math.pow(t*latitudeVector - z1, 2));
     }
 
     /**
@@ -112,6 +160,10 @@ public class Toolbox extends AbstractToolbox {
         return getDoubleProperty(Property.ALTITUDE);
     }
 
+    private void setAltitude(double value){
+        setDoubleProperty(Property.ALTITUDE,value);
+    }
+
     /**
      *  method that returns current Latitude
      * @return current Latitude
@@ -119,6 +171,10 @@ public class Toolbox extends AbstractToolbox {
     @Override
     public double getLatitude(){
         return getDoubleProperty(Property.LATITUDE);
+    }
+
+    private void setLatitude(double value){
+        setDoubleProperty(Property.LATITUDE,value);
     }
 
     /**
@@ -130,6 +186,10 @@ public class Toolbox extends AbstractToolbox {
         return getDoubleProperty(Property.LONGITUDE);
     }
 
+    private void setLongitude(double value){
+        setDoubleProperty(Property.LONGITUDE,value);
+    }
+
     /**
      *  method that returns current Roll
      * @return current Roll
@@ -137,6 +197,10 @@ public class Toolbox extends AbstractToolbox {
     @Override
     public double getRoll(){
         return getDoubleProperty(Property.ROLL);
+    }
+
+    private void setRoll(double value){
+        setDoubleProperty(Property.ROLL,value);
     }
 
     /**
@@ -148,6 +212,10 @@ public class Toolbox extends AbstractToolbox {
         return getDoubleProperty(Property.PITCH);
     }
 
+    private void setPitch(double value){
+        setDoubleProperty(Property.PITCH,value);
+    }
+
     /**
      *  method that returns current Yaw
      * @return current Yaw
@@ -155,6 +223,14 @@ public class Toolbox extends AbstractToolbox {
     @Override
     public double getYaw(){
         return getDoubleProperty(Property.YAW);
+    }
+
+    private void setYaw(double value){
+        setDoubleProperty(Property.YAW,value);
+    }
+
+    private void setSpeed(double value){
+        setDoubleProperty(Property.SPEED,value);
     }
 
     /**
@@ -211,14 +287,13 @@ public class Toolbox extends AbstractToolbox {
         setDoubleProperty(Property.RUDDER , rudderInput);
     }
 
-
     private double getDoubleProperty(Property p){
         DoublePropertyManager dpm = (DoublePropertyManager) properties.get(p);
         Double value = null;
         try {
             value = dpm.retrieveValue(fgfs);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
         return value;
     }
@@ -228,7 +303,7 @@ public class Toolbox extends AbstractToolbox {
         try {
             dpm.updateValue(fgfs,value);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
     }
 
@@ -238,7 +313,7 @@ public class Toolbox extends AbstractToolbox {
         try {
             value = spm.retrieveValue(fgfs);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
         return value;
     }
@@ -248,7 +323,7 @@ public class Toolbox extends AbstractToolbox {
         try {
             spm.updateValue(fgfs,value);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
     }
 
@@ -259,7 +334,7 @@ public class Toolbox extends AbstractToolbox {
         try {
             value = bpm.retrieveValue(fgfs);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
         return value;
     }
@@ -269,8 +344,15 @@ public class Toolbox extends AbstractToolbox {
         try {
             bpm.updateValue(fgfs,value);
         } catch (IOException e) {
-            //TODO: DETERMINE HOW TO HADLE THIS
+            exceptionHandler(e);
         }
+    }
+
+    private static synchronized void exceptionHandler(Exception e){
+        System.err.println(e.getMessage());
+        //System.err.println(e.getCause());
+        e.printStackTrace();
+        System.err.println("---------------------------------");
     }
 
 }
