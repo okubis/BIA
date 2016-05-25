@@ -5,6 +5,7 @@ import org.flightgear.fgfsclient.FGFSConnection;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.lang.Runtime;
 
 /**
  * Created by okubis on 5/17/16.
@@ -12,6 +13,7 @@ import java.util.HashMap;
 public class Toolbox extends AbstractToolbox {
     private FGFSConnection fgfs;
     private HashMap<Property, AbstractPropertyManager> properties;
+    private Process sim;
 
     /**
      * method that will add plane to the sim. and set its initial position, speed etc.
@@ -21,14 +23,19 @@ public class Toolbox extends AbstractToolbox {
     public boolean initFlight(SocketConnectionParameters socketParameters){
 
         //TODO: INIT FLIGHTGEAR
+        try {
+            //sim = new ProcessBuilder("fgfs",InitData.getFGFSArguments(socketParameters)).start();
+            sim =  Runtime.getRuntime().exec("fgfs"+ InitData.getFGFSArguments(socketParameters));
+            Thread.sleep(1500L);
+        } catch (Exception e) {
+            exceptionHandler(e);
+        }
 
         // init connection
         try {
             fgfs = new FGFSConnection(socketParameters.getHost(), socketParameters.getPort());
         }catch(IOException ioe){
-            System.err.println(ioe.getMessage());
-            System.err.println(ioe.getCause());
-            ioe.printStackTrace();
+            exceptionHandler(ioe);
             return false;
         }
         initProperties();
@@ -123,7 +130,7 @@ public class Toolbox extends AbstractToolbox {
         }
 
         //TODO: END FLIGHTGEAR
-        
+        sim.destroy();
         return true;
     }
 
