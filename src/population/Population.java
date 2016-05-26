@@ -1,4 +1,4 @@
-package neuroevo;
+package population;
 
 import gene.InputNode;
 import gene.NodeTuple;

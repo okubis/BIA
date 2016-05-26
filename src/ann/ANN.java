@@ -1,4 +1,4 @@
-package ANN;
+package ann;
 
 import java.util.HashMap;
 

@@ -3,7 +3,7 @@ package individual;
 import java.util.Random;
 
 import gene.*;
-import neuroevo.Population;
+import population.Population;
 
 public class Individual {
 	private static final double SIMILARITY_THRESHOLD = 0.4;
