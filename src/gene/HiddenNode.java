@@ -6,10 +6,9 @@ public class HiddenNode extends Node {
 
 	private double sigmoidParam;
 	
-	public HiddenNode(double sigmoidParam, int mark, int index) {
+	public HiddenNode(double sigmoidParam, int mark) {
 		this.sigmoidParam = sigmoidParam;
 		this.mark = mark;
-		this.index = index;
 	}
 	
 	@Override
@@ -45,7 +44,7 @@ public class HiddenNode extends Node {
 	@Override
 	public Node clone() {
 		// TODO Auto-generated method stub
-		return new HiddenNode(sigmoidParam, mark, index);
+		return new HiddenNode(sigmoidParam, mark);
 	}
 
 }

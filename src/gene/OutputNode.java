@@ -9,9 +9,9 @@ public class OutputNode extends Node {
 	
 	
 	
-	public OutputNode(double sigmoidParam, int index) {
+	public OutputNode(double sigmoidParam, int mark) {
 		this.sigmoidParam = sigmoidParam;
-		this.index = index;
+		this.mark = mark;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class OutputNode extends Node {
 	@Override
 	public Node clone() {
 		// TODO Auto-generated method stub
-		return new OutputNode(sigmoidParam, index);
+		return new OutputNode(sigmoidParam, mark);
 	}
 	
 }

@@ -7,9 +7,9 @@ public class InputNode extends Node {
 	public static final int INPUTS_COUNT = 9;
 	private double sigmoidParam;
 	
-	public InputNode(double sigmoidParam, int index) {
+	public InputNode(double sigmoidParam, int mark) {
 		this.sigmoidParam = sigmoidParam;
-		this.index = index;
+		this.mark = mark;
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class InputNode extends Node {
 	@Override
 	public Node clone() {
 		// TODO Auto-generated method stub
-		return new InputNode(sigmoidParam, index);
+		return new InputNode(sigmoidParam, mark);
 	}
 
 	public double getSigmoidParam() {

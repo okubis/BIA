@@ -6,10 +6,10 @@ import gene.*;
 import neuroevo.Population;
 
 public class Individual {
-	private static final double SIMILARITY_THRESHOLD = 0.2;
-	private static final double C_1 = 0.5;
-	private static final double C_2 = 0.4;
-	private static final double C_3 = 0.1;
+	private static final double SIMILARITY_THRESHOLD = 0.4;
+	private static final double C_1 = 0.4;
+	private static final double C_2 = 0.3;
+	private static final double C_3 = 0.3;
 	
 	private static final double MUTATION_PROBABILITY = 0.3;
 	private static final double PARAMETRIC_MUTATION_THRESHOLD = 0.7;
@@ -36,10 +36,12 @@ public class Individual {
 		this.pop = population;
 		this.rand = new Random();
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
-			genotype.addNode(new InputNode(rand.nextDouble(), i));
+			genotype.addNode(new InputNode(49, i));
+//			genotype.addNode(new InputNode(rand.nextGaussian(), i));
 		}
 		for(int i = InputNode.INPUTS_COUNT; i < InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT; i++){
-			genotype.addNode(new OutputNode(rand.nextDouble(), i));
+			genotype.addNode(new OutputNode(49, i));
+//			genotype.addNode(new OutputNode(rand.nextGaussian(), i));
 		}
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
 			for(int j = 0; j < OutputNode.OUTPUTS_COUNT; i++){
@@ -61,7 +63,7 @@ public class Individual {
 		if(genotype.disableConnection(con)){
 			NodeTuple tuple = new NodeTuple(con.getStart(), con.getEnd());
 			int nodeMark = pop.getNodeMark(tuple);
-			HiddenNode inserted = new HiddenNode(1, nodeMark, nodeMark);
+			HiddenNode inserted = new HiddenNode(49, nodeMark);
 			if(genotype.addHiddenNode(inserted, con)){
 				genotype.addConnection(new Connection(con.getStart(), nodeMark, pop.getConnectionMark(new NodeTuple(con.getStart(), nodeMark)), 1, false));
 				genotype.addConnection(new Connection(nodeMark, con.getEnd(), pop.getConnectionMark(new NodeTuple(nodeMark, con.getEnd())), con.getWeight(), false));
@@ -117,7 +119,7 @@ public class Individual {
 	public void mutate(){
 		if(rand.nextDouble() < PARAMETRIC_MUTATION_PROBABILITY){
 			//Parametric mutation
-			for(int i = 0; i < genotype.getGenotypeSize(); i++){
+			for(int i = genotype.getNodeCount(); i < genotype.getGenotypeSize(); i++){
 				if(rand.nextDouble() < PARAMETRIC_MUTATION_THRESHOLD) genotype.get(i).mutate(rand);
 			}
 		}else{
@@ -156,8 +158,6 @@ public class Individual {
 	
 	public Individual mating(Individual parent2, Population pop){
 		Genotype offspring = new Genotype();
-		int i1 = 0;
-		int i2 = 0;
 		Genotype better;
 		Genotype worse;
 		if(parent2.getRepresentativeFitness() < this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() && 
