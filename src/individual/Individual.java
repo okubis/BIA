@@ -140,12 +140,15 @@ public class Individual {
 		Genotype offspring = new Genotype();
 		int i1 = 0;
 		int i2 = 0;
-		boolean better;
+		Genotype better;
+		Genotype worse;
 		if(parent2.getRepresentativeFitness() < this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() && 
 				parent2.getFitness() < this.getFitness())){
-			better = true;
+			better = this.getGenotype();
+			worse = parent2.getGenotype();
 		}else{
-			better = false;
+			worse = this.getGenotype();
+			better = parent2.getGenotype();
 		}
 		
 		return null;
