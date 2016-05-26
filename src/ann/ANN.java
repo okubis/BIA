@@ -23,8 +23,21 @@ public class ANN {
 		}
 		int[] outputs = new int[nodeCount];
 		int[] processedOutputs = new int[nodeCount];
+		int[] outputSum = new int[nodeCount];
 		for(int i = nodeCount; i < gen.getGenotypeSize(); i++){
-			outputs[indexOf.get( ((Node) gen.get(i)).getMark() )]++;
+			outputs[indexOf.get( ((Connection) gen.get(i)).getStart() )]++;
+		}
+		outputSum[0] = 0;
+		for(int i = 1; i < nodeCount; i++){
+			outputSum[i] = outputSum[i-1] + outputs[i-1];
+		}
+		for(int i = nodeCount; i < gen.getGenotypeSize(); i++){
+			Connection con = (Connection) gen.get(i);
+			int indexNode = indexOf.get(con.getStart());
+			int index = outputSum[indexNode] + processedOutputs[indexNode]++;
+			cons[index] = con;
 		}
 	}
+	
+	
 }
