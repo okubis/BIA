@@ -5,9 +5,10 @@ import java.util.Random;
 import gene.*;
 
 public class Individual {
-	private static final double C_1 = 0.4;
+	private static final double SIMILARITY_THRESHOLD = 0.2;
+	private static final double C_1 = 0.5;
 	private static final double C_2 = 0.4;
-	private static final double C_3 = 0.4;
+	private static final double C_3 = 0.1;
 	
 	private static final double MUTATION_PROBABILITY = 0.3;
 	private static final double PARAMETRIC_MUTATION_THRESHOLD = 0.7;
@@ -79,10 +80,23 @@ public class Individual {
 	}
 	
 	public boolean isSimilarTo(Individual other){
-		double sum = 0;
-		//TO DO
-		
-		if(sum < C_1) return true;
+		int excess = 0;
+		int match = 0;
+		double dif = 0;
+		Genotype otherGen = other.getGenotype();
+		for (int i = 0; i < otherGen.getGenotypeSize(); i++) {
+			if(this.genotype.containsGene(otherGen.get(i))){
+				excess++;
+				if(otherGen.get(i).isConnection()){
+					match++;
+					Connection con = (Connection) otherGen.get(i);
+					dif += Math.abs(con.getWeight() - genotype.getConnectionByMark(con.getMark()).getWeight() );
+				}
+			}
+		}
+		int n = otherGen.getGenotypeSize() + this.genotype.getGenotypeSize() - excess;
+		int disjoint = n - excess;
+		if(excess*C_1/n + disjoint*C_2/n + C_3*dif/match < SIMILARITY_THRESHOLD) return true;
 		return false;
 	}
 	
@@ -156,14 +170,35 @@ public class Individual {
 		for (int i = 0; i < worseNodes; i++) {
 			offspring.addNode( ((Node) worse.get(i).clone()) );
 		}
-		boolean[][] reachable = new boolean[offspring.getNodeCount()][offspring.getNodeCount()];
+		int biggestMark = 0;
+		for (int i = 0; i < offspring.getNodeCount(); i++) {
+			if(biggestMark < offspring.get(i).getMark()) biggestMark = offspring.get(i).getMark();
+		}
+		boolean[][] reachable = new boolean[biggestMark][biggestMark];
 		for (int i = betterNodes; i < betterGenes; i++) {
 			Connection con = (Connection) better.get(i);
-			if(offspring.addConnectionRecurrent(con)){
-				
+			if(!reachable[con.getStart()][con.getEnd()] && offspring.addConnectionRecurrent(con)){
+				reachable[con.getEnd()][con.getStart()] = true;
+				for (int j = 0; j < biggestMark; j++) {
+					if(reachable[con.getStart()][j]){
+						reachable[con.getEnd()][j] = true;
+					}
+				}
 			}
 		}
-		return null;
+		for (int i = worseNodes; i < worseGenes; i++) {
+			Connection con = (Connection) worse.get(i);
+			if(!reachable[con.getStart()][con.getEnd()] && offspring.addConnectionRecurrent(con)){
+				reachable[con.getEnd()][con.getStart()] = true;
+				for (int j = 0; j < biggestMark; j++) {
+					if(reachable[con.getStart()][j]){
+						reachable[con.getEnd()][j] = true;
+					}
+				}
+			}
+		}
+		//To do, sort nodes
+		return new Individual(offspring, pop);
 	}
 	
 //	public double getPenalty(double x, double y, double z){

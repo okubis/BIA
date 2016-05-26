@@ -127,6 +127,15 @@ public class Genotype {
 		return con;
 	}
 	
+	public boolean containsGene(Gene gen){
+		if(gen.isConnection()){
+			if( getConnectionByMark(((Connection) gen).getMark()) == null ) return false;
+		}else{
+			if( getNodeByMark(((Node) gen).getMark()) == null ) return false;
+		}
+		return true;
+	}
+	
 //	public void addHiddenNodeToConnection(Connection con, int nodeMark, int conMark1, int conMark2){
 //		if(disableConnection(con)){
 //			HiddenNode inserted = new HiddenNode(1, nodeMark, nodeCount);
