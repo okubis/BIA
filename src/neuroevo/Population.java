@@ -1,4 +1,4 @@
-package individual;
+package neuroevo;
 
 import gene.InputNode;
 import gene.NodeTuple;
@@ -13,7 +13,7 @@ public class Population {
 	private int nextMarkCon;
 	private int nextMarkNode = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT;
 	
-	protected int getConnectionMark(NodeTuple tuple){
+	public int getConnectionMark(NodeTuple tuple){
 		Integer mark = connections.get(tuple);
 		if(mark == null){
 			mark = nextMarkCon++;
@@ -22,7 +22,7 @@ public class Population {
 		return mark;
 	}
 	
-	protected int getNodeMark(NodeTuple tuple){
+	public int getNodeMark(NodeTuple tuple){
 		Integer mark = nodes.get(tuple);
 		if(mark == null){
 			mark = nextMarkNode++;
