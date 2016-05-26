@@ -12,6 +12,12 @@ public class HistoricalMarkingManager {
 	private HashMap<NodeTuple, Integer> nodes;
 	private int nextMarkCon;
 	private int nextMarkNode = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT;
+
+	HistoricalMarkingManager(){
+		connections = new HashMap<NodeTuple, Integer>();
+		nodes = new HashMap<NodeTuple, Integer>();
+		nextMarkCon=0;
+	}
 	
 	public int getConnectionMark(NodeTuple tuple){
 		Integer mark = connections.get(tuple);
