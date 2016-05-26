@@ -50,6 +50,14 @@ public class Individual {
 		}
 	}
 	
+	public void setFitness(double fitness){
+		this.fitness = fitness;
+	}
+	
+	public void setRepresentative(Individual representative){
+		this.representative = representative;
+	}
+	
 	public boolean addHiddenNodeToConnection(Connection con){
 		if(genotype.disableConnection(con)){
 			NodeTuple tuple = new NodeTuple(con.getStart(), con.getEnd());
@@ -198,23 +206,8 @@ public class Individual {
 				}
 			}
 		}
-		//To do, sort nodes
+		offspring.sortNodes(betterNodes, reachable);
 		return new Individual(offspring, pop);
 	}
 	
-//	public double getPenalty(double x, double y, double z){
-//		// let us consider a line given by a point (START_X, START_Y, START_Z) and vector (VECTOR_X, VECTOR_Y, VECTOR_Z) 
-//		// We want to calculate the distance between the line and point (x, y, z)
-//		double START_X = 1;
-//		double START_Y = 1;
-//		double START_Z = 1;
-//		double VECTOR_X = 1;
-//		double VECTOR_Y = 1;
-//		double VECTOR_Z = 1;
-//		double x1 = x - START_X;
-//		double y1 = y - START_Y;
-//		double z1 = z - START_Z;
-//		double t = ( VECTOR_X*x1 + VECTOR_Y*y1 + VECTOR_Z*z1 ) / (Math.pow(VECTOR_X, 2) + Math.pow(VECTOR_Y, 2) + Math.pow(VECTOR_Z, 2));
-//		return Math.sqrt(Math.pow(t*VECTOR_X - x1, 2) + Math.pow(t*VECTOR_Y - y1, 2) + Math.pow(t*VECTOR_Z - z1, 2));
-//	}
 }

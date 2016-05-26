@@ -136,12 +136,31 @@ public class Genotype {
 		return true;
 	}
 	
-//	public void addHiddenNodeToConnection(Connection con, int nodeMark, int conMark1, int conMark2){
-//		if(disableConnection(con)){
-//			HiddenNode inserted = new HiddenNode(1, nodeMark, nodeCount);
-//			addNode(inserted);
-//			addConnection(new Connection(con.getStart(), nodeMark, conMark1, 1, true));
-//			addConnection(new Connection(nodeMark, con.getEnd(), conMark2, con.getWeight(), true));
-//		}
-//	}
+	public void sortNodes(int sortedIndex, boolean[][] reachable){
+		ArrayList<Node> toSort = new ArrayList<Node>();
+		for (int i = nodeCount - 1; i >= sortedIndex; i--) {
+			toSort.add((Node) genotype.get(i));
+			genotype.remove(i);
+		}
+		int index = sortedIndex - 1;
+		while(!toSort.isEmpty() && index >= 0){
+			Node current = (Node) genotype.get(index--);
+			if(!current.isOutput()){
+				if(current.isInput()){
+					for (int i = toSort.size() - 1; i >= 0; i--) {
+						genotype.add(index + 1, toSort.get(i));
+						toSort.remove(i);
+					}
+				}else{
+					for (int i = toSort.size() - 1; i >= 0; i--) {
+						if(reachable[toSort.get(i).getMark()][current.getMark()]){
+							genotype.add(index + 1, toSort.get(i));
+							toSort.remove(i);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }
