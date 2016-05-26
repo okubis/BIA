@@ -12,6 +12,9 @@ public class Population {
 	private HashMap<NodeTuple, Integer> nodes;
 	private int nextMarkCon;
 	private int nextMarkNode = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT;
+
+	//TODO: constructor - CAPART
+	//TODO: other methods - CAPART
 	
 	public int getConnectionMark(NodeTuple tuple){
 		Integer mark = connections.get(tuple);

@@ -34,7 +34,7 @@ public class Main extends JFrame {
             System.out.println(toolbox.getLatitude());
             System.out.println(toolbox.getLongitude());
             try {
-                Thread.sleep(500L);
+                Thread.sleep(5000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
