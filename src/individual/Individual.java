@@ -3,6 +3,7 @@ package individual;
 import java.util.Random;
 
 import gene.*;
+import population.HistoricalMarkingManager;
 import population.Population;
 
 public class Individual {
@@ -22,18 +23,18 @@ public class Individual {
 	private Genotype genotype;
 	private double fitness;
 	private Individual representative;
-	private Population pop;
+	private HistoricalMarkingManager marks;
 	private Random rand;
 	
-	public Individual(Genotype genotype, Population pop) {
+	public Individual(Genotype genotype, HistoricalMarkingManager m) {
 		this.genotype = genotype;
-		this.pop = pop;
+		this.marks = m;
 		rand = new Random();
 	}
 	
-	public Individual(Population population){
+	public Individual(HistoricalMarkingManager m){
 		this.genotype = new Genotype();
-		this.pop = population;
+		this.marks = m;
 		this.rand = new Random();
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
 			genotype.addNode(new InputNode(49, i));
@@ -62,11 +63,11 @@ public class Individual {
 	public boolean addHiddenNodeToConnection(Connection con){
 		if(genotype.disableConnection(con)){
 			NodeTuple tuple = new NodeTuple(con.getStart(), con.getEnd());
-			int nodeMark = pop.getNodeMark(tuple);
+			int nodeMark = marks.getNodeMark(tuple);
 			HiddenNode inserted = new HiddenNode(49, nodeMark);
 			if(genotype.addHiddenNode(inserted, con)){
-				genotype.addConnection(new Connection(con.getStart(), nodeMark, pop.getConnectionMark(new NodeTuple(con.getStart(), nodeMark)), 1, false));
-				genotype.addConnection(new Connection(nodeMark, con.getEnd(), pop.getConnectionMark(new NodeTuple(nodeMark, con.getEnd())), con.getWeight(), false));
+				genotype.addConnection(new Connection(con.getStart(), nodeMark, marks.getConnectionMark(new NodeTuple(con.getStart(), nodeMark)), 1, false));
+				genotype.addConnection(new Connection(nodeMark, con.getEnd(), marks.getConnectionMark(new NodeTuple(nodeMark, con.getEnd())), con.getWeight(), false));
 				return true;
 			}
 		}
@@ -111,7 +112,7 @@ public class Individual {
 	}
 	
 	public Connection connect(int start, int end){
-		int mark = pop.getConnectionMark(new NodeTuple(start, end));
+		int mark = marks.getConnectionMark(new NodeTuple(start, end));
 		
 		return new Connection(start, end, mark, 1/2 + rand.nextGaussian(), false);
 	}
@@ -156,7 +157,7 @@ public class Individual {
 		}
 	}
 	
-	public Individual mating(Individual parent2, Population pop){
+	public Individual mating(Individual parent2, HistoricalMarkingManager hsm){
 		Genotype offspring = new Genotype();
 		Genotype better;
 		Genotype worse;
@@ -206,7 +207,7 @@ public class Individual {
 			}
 		}
 		offspring.sortNodes(betterNodes, reachable);
-		return new Individual(offspring, pop);
+		return new Individual(offspring, hsm);
 	}
 	
 }
