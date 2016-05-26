@@ -50,8 +50,8 @@ public class Genotype {
 	}
 	
 	public boolean addHiddenNode(HiddenNode node, Connection con){
-		int index = genotype.indexOf(con.getStart());
-		if(index >= 0 && genotype.indexOf(con.getEnd()) > index && getNodeByMark(node.getMark()) == null){
+		int index = genotype.indexOf(getNodeByMark(con.getStart()));
+		if(index >= 0 && genotype.indexOf(getNodeByMark(con.getEnd())) > index && getNodeByMark(node.getMark()) == null){
 			genotype.add(index + 1, node);
 			nodeCount++;
 			return true;
@@ -60,13 +60,29 @@ public class Genotype {
 	}
 	
 	public boolean addConnection(Connection con){
-		int indexEnd = genotype.indexOf(con.getEnd());
-		int indexStart = genotype.indexOf(con.getStart());
-		Node start = (Node) genotype.get(indexStart);
-		Node end = (Node) genotype.get(indexEnd);
-		if(indexStart >= 0 && indexEnd > indexStart && !start.isOutput() && !end.isInput()){
-			genotype.add(con);
-			return true;
+		if(getConnectionByMark(con.getMark()) == null){
+			int indexEnd = genotype.indexOf(getNodeByMark(con.getEnd()));
+			int indexStart = genotype.indexOf(getNodeByMark(con.getStart()));
+			Node start = (Node) genotype.get(indexStart);
+			Node end = (Node) genotype.get(indexEnd);
+			if(indexStart >= 0 && indexEnd > indexStart && !start.isOutput() && !end.isInput()){
+				genotype.add(con);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean addConnectionRecurrent(Connection con){
+		if(getConnectionByMark(con.getMark()) == null){
+			int indexEnd = genotype.indexOf(getNodeByMark(con.getEnd()));
+			int indexStart = genotype.indexOf(getNodeByMark(con.getStart()));
+			Node start = (Node) genotype.get(indexStart);
+			Node end = (Node) genotype.get(indexEnd);
+			if(!start.isOutput() && !end.isInput()){
+				genotype.add(con);
+				return true;
+			}
 		}
 		return false;
 	}

@@ -88,5 +88,10 @@ public class Connection extends Gene{
 		
 	}
 
+	@Override
+	public Gene clone() {
+		return new Connection(start, end, mark, weight, enabled);
+	}
+
 	
 }

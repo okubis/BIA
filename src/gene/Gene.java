@@ -19,4 +19,5 @@ public abstract class Gene {
 	public abstract boolean isNode();
 	public abstract boolean isConnection();
 	public abstract void mutate(Random rand);
+	public abstract Gene clone();
 }

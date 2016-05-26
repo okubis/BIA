@@ -2,11 +2,7 @@ package individual;
 
 import java.util.Random;
 
-import gene.Connection;
-import gene.HiddenNode;
-import gene.InputNode;
-import gene.NodeTuple;
-import gene.OutputNode;
+import gene.*;
 
 public class Individual {
 	private static final double C_1 = 0.4;
@@ -136,7 +132,7 @@ public class Individual {
 		}
 	}
 	
-	public Individual mating(Individual parent2){
+	public Individual mating(Individual parent2, Population pop){
 		Genotype offspring = new Genotype();
 		int i1 = 0;
 		int i2 = 0;
@@ -150,7 +146,23 @@ public class Individual {
 			worse = this.getGenotype();
 			better = parent2.getGenotype();
 		}
-		
+		int betterNodes = better.getNodeCount();
+		int worseNodes = worse.getNodeCount();
+		int betterGenes = better.getGenotypeSize();
+		int worseGenes = worse.getGenotypeSize();
+		for (int i = 0; i < betterNodes; i++) {
+			offspring.addNode( ((Node) better.get(i).clone()) );
+		}
+		for (int i = 0; i < worseNodes; i++) {
+			offspring.addNode( ((Node) worse.get(i).clone()) );
+		}
+		boolean[][] reachable = new boolean[offspring.getNodeCount()][offspring.getNodeCount()];
+		for (int i = betterNodes; i < betterGenes; i++) {
+			Connection con = (Connection) better.get(i);
+			if(offspring.addConnectionRecurrent(con)){
+				
+			}
+		}
 		return null;
 	}
 	
