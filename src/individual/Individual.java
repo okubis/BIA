@@ -35,7 +35,6 @@ public class Individual {
 		this.genotype = new Genotype();
 		this.pop = population;
 		this.rand = new Random();
-		Random rand = new Random();
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
 			genotype.addNode(new InputNode(rand.nextDouble(), i));
 		}
