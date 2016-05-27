@@ -13,7 +13,7 @@ public class HistoricalMarkingManager {
 	private int nextMarkCon;
 	private int nextMarkNode = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT;
 
-	HistoricalMarkingManager(){
+	public HistoricalMarkingManager(){
 		connections = new HashMap<NodeTuple, Integer>();
 		nodes = new HashMap<NodeTuple, Integer>();
 		nextMarkCon=0;

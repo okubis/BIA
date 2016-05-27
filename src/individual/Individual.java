@@ -13,7 +13,7 @@ public class Individual {
 	private static final double C_3 = 0.3;
 	
 	private static final double MUTATION_PROBABILITY = 0.3;
-	private static final double PARAMETRIC_MUTATION_THRESHOLD = 0.7;
+	private static final double PARAMETRIC_MUTATION_THRESHOLD = 0.2;
 	private static final double PARAMETRIC_MUTATION_PROBABILITY = 0.6;
 	
 	private static final double STRUCTURAL_MUTATION_ADDING_EDGE_PROBABILITY = 0.5;
@@ -45,8 +45,8 @@ public class Individual {
 //			genotype.addNode(new OutputNode(rand.nextGaussian(), i));
 		}
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
-			for(int j = 0; j < OutputNode.OUTPUTS_COUNT; i++){
-				genotype.addConnection(connect(i, InputNode.INPUTS_COUNT + j));
+			for(int j = 0; j < OutputNode.OUTPUTS_COUNT; j++){
+				genotype.addConnection(connect(i, InputNode.INPUTS_COUNT + j, true));
 //				genotype.addConnection(new Connection(i, InputNode.INPUTS_COUNT + j, pop.getConnectionMark(new NodeTuple(i, InputNode.INPUTS_COUNT + j))));
 			}
 		}
@@ -111,10 +111,10 @@ public class Individual {
 		return false;
 	}
 	
-	public Connection connect(int start, int end){
+	public Connection connect(int start, int end, boolean enabled){
 		int mark = marks.getConnectionMark(new NodeTuple(start, end));
 		
-		return new Connection(start, end, mark, 1/2 + rand.nextGaussian(), false);
+		return new Connection(start, end, mark, 1/2 + rand.nextGaussian(), enabled);
 	}
 
 	public void mutate(){
@@ -133,7 +133,7 @@ public class Individual {
 				while(!success && tries > 0){
 					int node1 = rand.nextInt(genotype.getNodeCount() - 2);
 					int node2 = node1 + 1 + rand.nextInt(genotype.getNodeCount() - node1);
-					success = genotype.addConnection(connect(genotype.get(node1).getMark(), genotype.get(node2).getMark()));
+					success = genotype.addConnection(connect(genotype.get(node1).getMark(), genotype.get(node2).getMark(), false));
 					tries--;
 				}
 			}else if(prob < STRUCTURAL_MUTATION_ADDING_NODE_PROBABILITY){
@@ -183,7 +183,7 @@ public class Individual {
 		for (int i = 0; i < offspring.getNodeCount(); i++) {
 			if(biggestMark < offspring.get(i).getMark()) biggestMark = offspring.get(i).getMark();
 		}
-		boolean[][] reachable = new boolean[biggestMark][biggestMark];
+		boolean[][] reachable = new boolean[biggestMark + 1][biggestMark + 1];
 		for (int i = betterNodes; i < betterGenes; i++) {
 			Connection con = (Connection) better.get(i);
 			if(!reachable[con.getStart()][con.getEnd()] && offspring.addConnectionRecurrent(con)){
@@ -209,5 +209,14 @@ public class Individual {
 		offspring.sortNodes(betterNodes, reachable);
 		return new Individual(offspring, hsm);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder("Fitness: " + fitness + "\n");
+		s.append(genotype.toString());
+		return s.toString();
+	}
+	
+	
 	
 }

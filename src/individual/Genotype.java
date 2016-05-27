@@ -42,7 +42,7 @@ public class Genotype {
 	
 	public boolean addHiddenNodeAtIndex(HiddenNode node, int index){
 		if(getNodeByMark(node.getMark()) == null){
-			genotype.add(index, node);
+			genotype.add(Math.max(index, InputNode.INPUTS_COUNT), node);
 			nodeCount++;
 			return true;
 		}
@@ -52,7 +52,7 @@ public class Genotype {
 	public boolean addHiddenNode(HiddenNode node, Connection con){
 		int index = genotype.indexOf(getNodeByMark(con.getStart()));
 		if(index >= 0 && genotype.indexOf(getNodeByMark(con.getEnd())) > index && getNodeByMark(node.getMark()) == null){
-			genotype.add(index + 1, node);
+			genotype.add(Math.max(index + 1, InputNode.INPUTS_COUNT), node);
 			nodeCount++;
 			return true;
 		}
@@ -144,7 +144,7 @@ public class Genotype {
 		}
 		int index = sortedIndex - 1;
 		while(!toSort.isEmpty() && index >= 0){
-			Node current = (Node) genotype.get(index--);
+			Node current = (Node) genotype.get(index);
 			if(!current.isOutput()){
 				if(current.isInput()){
 					for (int i = toSort.size() - 1; i >= 0; i--) {
@@ -160,7 +160,20 @@ public class Genotype {
 					}
 				}
 			}
+			index--;
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder("Gene count: " + this.getGenotypeSize() + "\n");
+		s.append("Node count: " + this.nodeCount + "\n");
+		for (int i = 0; i < this.getGenotypeSize(); i++) {
+			s.append(genotype.get(i).toString() + "\n");
+		}
+		return s.toString();
+	}
+	
+	
 	
 }

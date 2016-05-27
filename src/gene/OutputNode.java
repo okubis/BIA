@@ -45,5 +45,11 @@ public class OutputNode extends Node {
 		// TODO Auto-generated method stub
 		return new OutputNode(sigmoidParam, mark);
 	}
+
+	@Override
+	public String toString() {
+		return "OutputNode [sigmoidParam=" + sigmoidParam + ", mark=" + mark
+				+ "]";
+	}
 	
 }

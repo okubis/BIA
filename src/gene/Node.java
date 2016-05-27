@@ -16,5 +16,5 @@ public abstract class Node extends Gene {
 	public boolean isConnection() {
 		return false;
 	}
-
+	
 }

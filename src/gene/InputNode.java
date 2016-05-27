@@ -48,5 +48,11 @@ public class InputNode extends Node {
 	public double getSigmoidParam() {
 		return sigmoidParam;
 	}
+	
+	@Override
+	public String toString() {
+		return "InputNode [sigmoidParam=" + sigmoidParam + ", mark=" + mark
+				+ "]";
+	}
 
 }

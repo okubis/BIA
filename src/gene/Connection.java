@@ -93,5 +93,13 @@ public class Connection extends Gene{
 		return new Connection(start, end, mark, weight, enabled);
 	}
 
+	@Override
+	public String toString() {
+		return "Connection [start=" + start + ", end=" + end + ", weight="
+				+ weight + ", enabled=" + enabled + ", isRecurrent="
+				+ isRecurrent + ", mark=" + mark + "]";
+	}
+	
+	
 	
 }
