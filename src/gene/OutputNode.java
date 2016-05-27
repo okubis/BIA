@@ -52,8 +52,10 @@ public class OutputNode extends Node {
 
 	@Override
 	public String toString() {
-		return "OutputNode [sigmoidParam=" + sigmoidParam + ", mark=" + mark
-				+ "]";
+		return "OutputNode [sigmoidParam=" + sigmoidParam + ", bias=" + bias
+				+ ", mark=" + mark + "]";
 	}
+
+
 	
 }
