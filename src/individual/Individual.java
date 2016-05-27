@@ -157,7 +157,7 @@ public class Individual {
 		Genotype offspring = new Genotype();
 		Genotype better;
 		Genotype worse;
-		if(parent2.getRepresentativeFitness() < this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() && 
+		if(parent2.getRepresentativeFitness() > this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() && 
 				parent2.getFitness() < this.getFitness())){
 			better = this.getGenotype();
 			worse = parent2.getGenotype();
