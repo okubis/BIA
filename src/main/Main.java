@@ -31,6 +31,8 @@ public class Main extends JFrame {
         //TODO: what to do with the result...
         // serialize? save as string?
         saveResult();
+        System.out.println("result in the form of a String: ");
+        System.out.println(result.toString());
     }
 
     private static void saveResult() {
