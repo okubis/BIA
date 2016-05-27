@@ -6,6 +6,8 @@ public class NeatParameters {
 	public static final int SPECIES_TOURNAMENT_SIZE = 5;
 	public static final int INDIVIDUALS_TOURNAMENT_SIZE = 7;
 	
+	public static final double CROSS_SPECIES_MATING_PROBABILITY = 0.05;
+	
 	public static final double MUTATION_PROBABILITY = 0.4;
 	public static final double PARAMETRIC_MUTATION_THRESHOLD = 0.2;
 	public static final double PARAMETRIC_MUTATION_PROBABILITY = 0.6;

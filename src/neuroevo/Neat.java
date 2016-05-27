@@ -87,11 +87,27 @@ public class Neat {
     }
     //TODO: metodka pro krizeni
     private ArrayList<Individual> createChildrenByCrossOver() {
-        return null;
+    	ArrayList<Individual> result = new ArrayList<Individual>();
+    	for (int i = 0; i < populationManager.getPopulationSize() - 1; i++) {
+			int specie = selectSpecieByTournament();
+			int index1 = selectIndividualByTournament(specie);
+			int index2;
+			if(rand.nextDouble() < NeatParameters.CROSS_SPECIES_MATING_PROBABILITY){
+				int specie2 = selectSpecieByTournament();
+				index2 = selectIndividualByTournament(specie2);
+			}else{
+				index2 = selectIndividualByTournament(specie);
+			}
+			result.add(population.getIndividualByItsPosition(index1).mating(population.getIndividualByItsPosition(index2), populationManager.getMarks()));
+		}
+        return result;
     }
     //TODO: metodka pro mutaci
     private ArrayList<Individual> mutateChildren(ArrayList<Individual> children) {
-        return null;
+    	for (int i = 0; i < children.size(); i++) {
+			children.get(i).mutate();
+		}
+        return children;
     }
 
     //TODO: metodka pro navrat nejlepsiho vysledku celeho behu NEATu
