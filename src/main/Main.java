@@ -1,77 +1,78 @@
 package main;
 
 import com.layer.SocketConnectionParameters;
-import com.layer.Toolbox;
-import com.properties.AbstractPropertyManager;
-import com.properties.BooleanPropertyManager;
-import com.properties.Property;
-import com.sun.org.apache.xpath.internal.SourceTree;
-import org.flightgear.fgfsclient.FGFSConnection;
-import org.flightgear.fgfsclient.PropertyField;
-import org.flightgear.fgfsclient.PropertyPage;
+import individual.Individual;
+import neuroevo.Neat;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by okubis on 5/14/16.
  */
 public class Main extends JFrame {
-    private static SocketConnectionParameters scp = new SocketConnectionParameters("localhost", 6789);
-    private static Toolbox toolbox = new Toolbox();
-    private static FGFSConnection fgfs;
+    private static ArrayList<SocketConnectionParameters> scp;
+    private static Neat neatInstance;
+    private static int populationSize;
+    private static int numberOfThreads;
+    private static int numberOfGenerations;
+    private static final int FIRST_SOCKET = 2000;
+    private static Individual result;
 
-    public static BooleanPropertyManager baf = new BooleanPropertyManager("/sim/freeze/master", Property.PITCH);
-    public static BooleanPropertyManager baf2 = new BooleanPropertyManager("/sim/freeze/position", Property.LATITUDE);
 
+    public static void main(String[] args) throws Exception {
+        readInput();
+        initSocketConnectionParameters();
+        neatInstance = new Neat(numberOfThreads, scp, populationSize);
+        neatInstance.Evolve(numberOfGenerations);
+        result = neatInstance.getBestResult();
+        //TODO: what to do with the result...
+        // serialize? save as string?
+        saveResult();
+    }
 
+    private static void saveResult() {
+    }
 
-    public static void main(String[] args) throws IOException {
-        //fgfs = new FGFSConnection("localhost", 6789);
-        toolbox.initFlight(scp);
-        for(int i=0;i<5;i++) {
-            System.out.println(toolbox.getLatitude());
-            System.out.println(toolbox.getLongitude());
-            try {
-                Thread.sleep(8000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    private static void initSocketConnectionParameters() {
+        scp = new ArrayList<SocketConnectionParameters>(populationSize);
+        for (int i = 0; i < populationSize; i++) {
+            SocketConnectionParameters conParams = new SocketConnectionParameters("localhost", FIRST_SOCKET + i);
+        }
+    }
+
+    private static void readInput() throws Exception {
+        BufferedInputStream inBuffer = new BufferedInputStream(System.in);
+        System.out
+                .println("Specify number of threads this algorithm can use to evaluate fitness function in parallel: ");
+        numberOfThreads = readInteger(inBuffer);
+        System.out.println("Specify size of population used by the NEAT algorithm: ");
+        populationSize = readInteger(inBuffer);
+        System.out.println("Specify number of generations computed by the NEAT algorithm: ");
+        numberOfGenerations = readInteger(inBuffer);
+        // should be closed, but not in the case of console, right?
+        //inBuffer.close();
+    }
+
+    private static int readInteger(InputStream input) throws Exception {
+        int loaded = 0;
+        boolean isDigit = true;
+        boolean somethingLoaded = false;
+
+        while (isDigit) {
+            int in = input.read();
+            if (in >= '0' && in <= '9') {
+                isDigit = true;
+                loaded = loaded * 10 + in - '0';
+                somethingLoaded = true;
+            } else {
+                if (somethingLoaded)
+                    isDigit = false;
             }
         }
-        toolbox.endFlight();
-      //  System.out.println(toolbox.getRoll());
-      //  System.out.println(toolbox.getPitch());
-      //  System.out.println(toolbox.getYaw());
-       // System.out.println(toolbox.Spe);
-        // 37.59850793
-        // -122.3214854
-        // 2030.341683
-
-        /*
-        while(true){
-            double aileron = 0;
-
-             //   aileron = toolbox.getAileronStatus();
-
-            //System.out.println(aileron);
-
-        //    System.out.println(toolbox.getRoll());
-        //    System.out.println(toolbox.getPitch());
-        //    System.out.println(toolbox.getYaw());
-            toolbox.initFlight(scp);
-            System.out.println("-------------------------");
-            try {
-                Thread.sleep(20000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-          //  toolbox.setAileron(aileron+0.01);
-        }
-
-        */
-
-        //TODO: this will be the main class
+        return loaded;
     }
 
 }
