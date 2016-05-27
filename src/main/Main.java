@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by okubis on 5/14/16.
@@ -20,6 +21,7 @@ public class Main extends JFrame {
     private static int numberOfGenerations;
     private static final int FIRST_SOCKET = 2000;
     private static Individual result;
+    private static String outputFile;
 
 
     public static void main(String[] args) throws Exception {
@@ -28,14 +30,13 @@ public class Main extends JFrame {
         neatInstance = new Neat(numberOfThreads, scp, populationSize);
         neatInstance.Evolve(numberOfGenerations);
         result = neatInstance.getBestResult();
-        //TODO: what to do with the result...
-        // serialize? save as string?
         saveResult();
         System.out.println("result in the form of a String: ");
         System.out.println(result.toString());
     }
 
     private static void saveResult() {
+        // use outputFile
     }
 
     private static void initSocketConnectionParameters() {
@@ -54,6 +55,9 @@ public class Main extends JFrame {
         populationSize = readInteger(inBuffer);
         System.out.println("Specify number of generations computed by the NEAT algorithm: ");
         numberOfGenerations = readInteger(inBuffer);
+        System.out.println("Specify where the output should be stored (Path/fileName)");
+        Scanner sc = new Scanner(System.in);
+        outputFile = sc.nextLine();
         // should be closed, but not in the case of console, right?
         //inBuffer.close();
     }
