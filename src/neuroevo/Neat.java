@@ -1,16 +1,6 @@
 package neuroevo;
 
-import java.util.ArrayList;
-
 import com.layer.SocketConnectionParameters;
-
-import population.*;
-import individual.*;
-import ann.*;
-
-import com.layer.SocketConnectionParameters;
-
-import population.AbstractPopulationManager;
 import individual.Individual;
 import population.Population;
 import population.PopulationManager;
@@ -26,6 +16,13 @@ public class Neat {
     private ArrayList<ArrayList<Integer>> species; // index druhu => Arraylist indexu Individualu, kteri patri tomuto druhu
     private Random rand;
 
+    /**
+     * constructor
+     *
+     * @param numberOfThreads number of threads that can be used concurrently
+     * @param usableSockets   description of sockets usable for fitness evaluations
+     * @param populationSize  size of the population used during the evolution
+     */
     public Neat(int numberOfThreads, ArrayList<SocketConnectionParameters> usableSockets, int populationSize) {
         rand = new Random();
         populationManager = new PopulationManager(numberOfThreads, usableSockets, populationSize);
@@ -39,12 +36,16 @@ public class Neat {
         for (int i = 0; i < numberOfGenerations; i++) {
             ArrayList<Individual> newIndividuals = null;
             // TODO: ONE GENERATION OF NEAT ; long way to go
+            divideIntoSpecies();
+            // -> explicit fitness sharing evolution
             // TODO: ASSIGN RESULTING Individuals TO newIndividuals;
             population = populationManager.evaluatePopulation(newIndividuals);
         }
     }
 
-    //TODO: metodka pro rozrazeni do druhu;
+    /**
+     * changes global variable species, no need for its initialization besides the call of this function
+     */
     private void divideIntoSpecies(){
     	this.species = new ArrayList<ArrayList<Integer>>();
     	ArrayList<Integer> best = new ArrayList<Integer>();
