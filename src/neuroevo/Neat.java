@@ -81,7 +81,7 @@ public class Neat {
 		}
     }
 
-    //TODO: metodka pro vyber turnajem - Druh
+
     private int selectSpecieByTournament() {
 		int bestIndex = 0;
 		double bestValue = Double.MAX_VALUE;
@@ -96,8 +96,8 @@ public class Neat {
 		return bestIndex;
 	}
 
-    //TODO: metodka pro vyber turnajem1 - Jedinec
-    private int selectIndividualByTournament(int specie) {
+
+	private int selectIndividualByTournament(int specie) {
 		int bestIndex = 0;
 		double bestValue = Double.MAX_VALUE;
 		for (int i = 0; i < NeatParameters.INDIVIDUALS_TOURNAMENT_SIZE; i++) {
