@@ -20,6 +20,7 @@ public class ANN {
 		indexOf = new HashMap<Integer, Integer>();
 		values = new double[nodeCount];
 		for (int i = 0; i < nodeCount; i++) {
+			nodes[i] = ((Node) gen.get(i));
 			indexOf.put( ((Node) gen.get(i)).getMark() , i);
 		}
 		outputs = new int[nodeCount];

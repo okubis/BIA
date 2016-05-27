@@ -31,4 +31,10 @@ public class ANNOutputData {
     public void setRudder(double rudder) {
         this.rudder = rudder;
     }
+
+	@Override
+	public String toString() {
+		return "ANNOutputData [aileron=" + aileron + ", elevator=" + elevator
+				+ ", rudder=" + rudder + "]";
+	}
 }
