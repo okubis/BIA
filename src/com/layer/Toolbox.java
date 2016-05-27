@@ -24,8 +24,6 @@ public class Toolbox extends AbstractToolbox {
      */
     @Override
     public boolean initFlight(SocketConnectionParameters socketParameters){
-
-        //TODO: INIT FLIGHTGEAR
         try {
             //sim = new ProcessBuilder("fgfs",InitData.getFGFSArguments(socketParameters)).start();
             sim =  Runtime.getRuntime().exec("fgfs"+ InitData.getFGFSArguments(socketParameters));
@@ -132,7 +130,6 @@ public class Toolbox extends AbstractToolbox {
             return false;
         }
 
-        //TODO: END FLIGHTGEAR
         sim.destroy();
         return true;
     }

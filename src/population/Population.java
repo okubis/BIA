@@ -6,6 +6,8 @@ import com.layer.TimeConstants;
 import individual.Individual;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class Population {
@@ -13,11 +15,6 @@ public class Population {
 	private int indexOfBestSoFar;
 	private static ExecutorService executor;
 	private static CompletionService<Individual> completionService;
-
-
-
-	//TODO: constructor - CAPART
-	//TODO: other methods - CAPART
 
 	/**
 	 * internal constructor
@@ -100,6 +97,7 @@ public class Population {
 		boolean errors = false;
 		executor = Executors.newFixedThreadPool(numberOfThreads);
 		completionService = new ExecutorCompletionService<Individual>(executor);
+		Set<Individual> set = new HashSet<Individual>();
 
 		for(int i =0;i<populationSize;i++){
 			Evaluator evaluator = new Evaluator(usableSockets.get(i),newIndividuals.get(i), TimeConstants.EVALUATOR_TIMELIMIT,TimeConstants.EVALUATION_PERIOD);

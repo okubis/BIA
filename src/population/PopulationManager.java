@@ -28,7 +28,7 @@ public class PopulationManager extends AbstractPopulationManager {
     }
 
     /**
-     *
+     *  this method should be used to obtain initial population
      * @return initial Population
      */
     public Population init_population() {
@@ -37,16 +37,15 @@ public class PopulationManager extends AbstractPopulationManager {
     }
 
     /**
-     *
+     * this method should be used to compute fitness for Individuals and create new Population from list of Individuals
      * @param newIndividuals individuals to be evaluated and put into population
      * @return  new population of evaluated individuals
      */
     public Population evaluatePopulation(ArrayList<Individual> newIndividuals) {
         Population newPopulation = new Population(newIndividuals,populationSize,marks,numberOfThreads,usableSockets);
-        return null;
+        return newPopulation;
     }
-
-
+    
     public int getPopulationSize() {
         return populationSize;
     }

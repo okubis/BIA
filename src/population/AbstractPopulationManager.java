@@ -11,7 +11,6 @@ import java.util.Random;
 public abstract class AbstractPopulationManager {
     public abstract Population init_population();
     public abstract Population evaluatePopulation(ArrayList<Individual> newIndividuals);
-
-
-
+    public abstract int getPopulationSize();
+    public abstract HistoricalMarkingManager getMarks();
 }
