@@ -5,10 +5,12 @@ import java.util.Random;
 public class HiddenNode extends Node {
 
 	private double sigmoidParam;
+	private double bias;
 	
 	public HiddenNode(double sigmoidParam, int mark) {
 		this.sigmoidParam = sigmoidParam;
 		this.mark = mark;
+		this.bias = 0;
 	}
 	
 	@Override
@@ -26,19 +28,21 @@ public class HiddenNode extends Node {
 		return true;
 	}
 
-	@Override
-	public double function(double sum) {
-		// TODO Auto-generated method stub
-		return 1/(1 + Math.pow(Math.E, -sigmoidParam*sum));
-	}
-
 	public double getSigmoidParam() {
 		return sigmoidParam;
 	}
 
 	@Override
+	public double function(double sum) {
+		// TODO Auto-generated method stub
+		return 1/(1 + Math.pow(Math.E, -sigmoidParam*(sum + bias) ));
+	}
+
+	@Override
 	public void mutate(Random rand) {
-		this.sigmoidParam += rand.nextGaussian();
+//		sigmoidParam += rand.nextGaussian();
+		bias += rand.nextGaussian();
+		
 	}
 
 	@Override
