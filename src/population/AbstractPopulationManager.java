@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public abstract class AbstractPopulationManager {
     public abstract Population init_population();
-    public abstract Population evaluatePopulation(ArrayList<Individual> newIndividuals);// ArrayList,
+    public abstract Population evaluatePopulation(ArrayList<Individual> newIndividuals);
 
 
 

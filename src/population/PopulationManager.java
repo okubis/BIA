@@ -16,7 +16,7 @@ public class PopulationManager extends AbstractPopulationManager {
     private int populationSize;
 
 
-    public PopulationManager(int numberOfThreads,ArrayList<SocketConnectionParameters> usableSockets , int populationSize){
+    public PopulationManager(int numberOfThreads, ArrayList<SocketConnectionParameters> usableSockets, int populationSize){
         if(numberOfThreads > usableSockets.size()){
             throw new RuntimeException("MORE SOCKETS NEEDED");
         }else {
@@ -44,5 +44,14 @@ public class PopulationManager extends AbstractPopulationManager {
     public Population evaluatePopulation(ArrayList<Individual> newIndividuals) {
         Population newPopulation = new Population(newIndividuals,populationSize,marks,numberOfThreads,usableSockets);
         return null;
+    }
+
+
+    public int getPopulationSize() {
+        return populationSize;
+    }
+
+    public HistoricalMarkingManager getMarks() {
+        return marks;
     }
 }
