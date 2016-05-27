@@ -15,6 +15,9 @@ public class Toolbox extends AbstractToolbox {
     private HashMap<Property, AbstractPropertyManager> properties;
     private Process sim;
 
+    public Toolbox(){
+    }
+
     /**
      * method that will add plane to the sim. and set its initial position, speed etc.
      * @return  true if successful
