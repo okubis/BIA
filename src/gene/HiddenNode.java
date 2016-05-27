@@ -53,8 +53,10 @@ public class HiddenNode extends Node {
 
 	@Override
 	public String toString() {
-		return "HiddenNode [sigmoidParam=" + sigmoidParam + ", mark=" + mark
-				+ "]";
+		return "HiddenNode [sigmoidParam=" + sigmoidParam + ", bias=" + bias
+				+ ", mark=" + mark + "]";
 	}
+
+
 
 }
