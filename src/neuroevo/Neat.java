@@ -30,7 +30,11 @@ public class Neat {
         population = null;
     }
 
-    //TODO: metoda Evolve (i.e: hlavni metoda NEAT volana z main)
+    /**
+     * method for running the NEAT
+     *
+     * @param numberOfGenerations number of generations the NEAT should run evolution for
+     */
     public void Evolve(int numberOfGenerations) {
         population = populationManager.init_population();
         for (int i = 0; i < numberOfGenerations; i++) {
@@ -85,7 +89,8 @@ public class Neat {
     private int selectIndividualByTournament(int specie) {
         return 0;
     }
-    //TODO: metodka pro krizeni
+
+
     private ArrayList<Individual> createChildrenByCrossOver() {
     	ArrayList<Individual> result = new ArrayList<Individual>();
     	for (int i = 0; i < populationManager.getPopulationSize() - 1; i++) {
@@ -102,7 +107,7 @@ public class Neat {
 		}
         return result;
     }
-    //TODO: metodka pro mutaci
+
     private ArrayList<Individual> mutateChildren(ArrayList<Individual> children) {
     	for (int i = 0; i < children.size(); i++) {
 			children.get(i).mutate();
@@ -110,7 +115,10 @@ public class Neat {
         return children;
     }
 
-    //TODO: metodka pro navrat nejlepsiho vysledku celeho behu NEATu
+    /**
+     * method for obtaining the result of the NEAT algorithm
+     * @return best solution found during the run of the NEAT
+     */
     public Individual getBestResult() {
         return population.getBest();
     }
