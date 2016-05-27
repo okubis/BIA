@@ -13,24 +13,36 @@ public class PopulationManager extends AbstractPopulationManager {
     private int numberOfThreads;
     private ArrayList<SocketConnectionParameters> usableSockets;
     private HistoricalMarkingManager marks;
+    private int populationSize;
 
-    public PopulationManager(int numberOfThreads,ArrayList<SocketConnectionParameters> usableSockets){
+
+    public PopulationManager(int numberOfThreads,ArrayList<SocketConnectionParameters> usableSockets , int populationSize){
         if(numberOfThreads > usableSockets.size()){
             throw new RuntimeException("MORE SOCKETS NEEDED");
         }else {
             this.numberOfThreads = numberOfThreads;
             this.usableSockets = usableSockets;
             this.marks = new HistoricalMarkingManager();
+            this.populationSize = populationSize;
         }
     }
 
-    public Population init_population(int populationSize) {
+    /**
+     *
+     * @return initial Population
+     */
+    public Population init_population() {
         Population newPopulation = new Population(populationSize,marks,numberOfThreads,usableSockets);
         return newPopulation;
     }
 
-    public Population nextGeneration(Population population, int populationSize) {
-        Population newPopulation = new Population(population,populationSize,marks,numberOfThreads,usableSockets);
+    /**
+     *
+     * @param newIndividuals individuals to be evaluated and put into population
+     * @return  new population of evaluated individuals
+     */
+    public Population evaluatePopulation(ArrayList<Individual> newIndividuals) {
+        Population newPopulation = new Population(newIndividuals,populationSize,marks,numberOfThreads,usableSockets);
         return null;
     }
 }
