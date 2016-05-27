@@ -33,7 +33,6 @@ public class OutputNode extends Node {
 
 	@Override
 	public double function(double sum) {
-		// TODO Auto-generated method stub
 		return 1/(1 + Math.pow(Math.E, -sigmoidParam*(sum + bias) ));
 	}
 
@@ -46,7 +45,6 @@ public class OutputNode extends Node {
 
 	@Override
 	public Node clone() {
-		// TODO Auto-generated method stub
 		return new OutputNode(sigmoidParam, mark);
 	}
 
