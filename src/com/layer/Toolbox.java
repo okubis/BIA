@@ -29,7 +29,7 @@ public class Toolbox extends AbstractToolbox {
         try {
             //sim = new ProcessBuilder("fgfs",InitData.getFGFSArguments(socketParameters)).start();
             sim =  Runtime.getRuntime().exec("fgfs"+ InitData.getFGFSArguments(socketParameters));
-            Thread.sleep(1500L);
+            Thread.sleep(TimeConstants.FGFS_INIT_TIME_CONST);
         } catch (Exception e) {
             exceptionHandler(e);
         }

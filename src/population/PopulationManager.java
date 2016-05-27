@@ -17,7 +17,7 @@ public class PopulationManager extends AbstractPopulationManager {
 
 
     public PopulationManager(int numberOfThreads, ArrayList<SocketConnectionParameters> usableSockets, int populationSize){
-        if(numberOfThreads > usableSockets.size()){
+        if(populationSize > usableSockets.size()){
             throw new RuntimeException("MORE SOCKETS NEEDED");
         }else {
             this.numberOfThreads = numberOfThreads;
