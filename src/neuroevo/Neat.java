@@ -35,10 +35,10 @@ public class Neat {
         population = populationManager.init_population();
         for (int i = 0; i < numberOfGenerations; i++) {
             ArrayList<Individual> newIndividuals = null;
-            // TODO: ONE GENERATION OF NEAT ; long way to go
             divideIntoSpecies();
-            // -> explicit fitness sharing evolution
-            // TODO: ASSIGN RESULTING Individuals TO newIndividuals;
+            newIndividuals = createChildrenByCrossOver();
+            newIndividuals = mutateChildren(newIndividuals);
+            newIndividuals.add(population.getBest());
             population = populationManager.evaluatePopulation(newIndividuals);
         }
     }
