@@ -1,11 +1,10 @@
 package individual;
 
-import java.util.Random;
-
-import neuroevo.NeatParameters;
 import gene.*;
+import neuroevo.NeatParameters;
 import population.HistoricalMarkingManager;
-import population.Population;
+
+import java.util.Random;
 
 public class Individual {
 	private static final double SIMILARITY_THRESHOLD = 0.4;
@@ -26,7 +25,7 @@ public class Individual {
 		this.marks = m;
 		rand = new Random();
 	}
-	
+
 	public Individual(HistoricalMarkingManager m){
 		this.genotype = new Genotype();
 		this.marks = m;
@@ -157,7 +156,7 @@ public class Individual {
 		Genotype offspring = new Genotype();
 		Genotype better;
 		Genotype worse;
-		if(parent2.getRepresentativeFitness() > this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() && 
+		if (parent2.getRepresentativeFitness() > this.getRepresentativeFitness() || (parent2.getRepresentativeFitness() == this.getRepresentativeFitness() &&
 				parent2.getFitness() < this.getFitness())){
 			better = this.getGenotype();
 			worse = parent2.getGenotype();

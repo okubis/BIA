@@ -61,7 +61,7 @@ public class Neat {
 						population.getIndividualByItsPosition(species.get(j).get(0)))){
 					neededNewSpecies = false;
 					species.get(j).add(i);
-					if(currentIndividual.getFitness() < population.getIndividualByItsPosition(best.get(j)).getFitness()){
+					if (currentIndividual.getFitness() < population.getIndividualByItsPosition(best.get(j)).getFitness()) {
 						best.set(j, i);
 					}
 					break;
@@ -83,33 +83,33 @@ public class Neat {
 
     //TODO: metodka pro vyber turnajem - Druh
     private int selectSpecieByTournament() {
-    	int bestIndex = 0;
-    	double bestValue = Double.MAX_VALUE;
-    	for (int i = 0; i < NeatParameters.SPECIES_TOURNAMENT_SIZE; i++) {
+		int bestIndex = 0;
+		double bestValue = Double.MAX_VALUE;
+		for (int i = 0; i < NeatParameters.SPECIES_TOURNAMENT_SIZE; i++) {
 			int index = rand.nextInt(species.size());
 			double value = population.getIndividualByItsPosition(species.get(index).get(0)).getRepresentativeFitness();
-			if(value < bestValue){
+			if (value < bestValue) {
 				bestIndex = index;
 				bestValue = value;
 			}
 		}
-        return bestIndex;
-    }
+		return bestIndex;
+	}
 
     //TODO: metodka pro vyber turnajem1 - Jedinec
     private int selectIndividualByTournament(int specie) {
-    	int bestIndex = 0;
-    	double bestValue = Double.MAX_VALUE;
-    	for (int i = 0; i < NeatParameters.INDIVIDUALS_TOURNAMENT_SIZE; i++) {
+		int bestIndex = 0;
+		double bestValue = Double.MAX_VALUE;
+		for (int i = 0; i < NeatParameters.INDIVIDUALS_TOURNAMENT_SIZE; i++) {
 			int index = rand.nextInt(species.get(specie).size());
 			double value = population.getIndividualByItsPosition(species.get(specie).get(index)).getFitness();
-			if(value < bestValue){
+			if (value < bestValue) {
 				bestIndex = index;
 				bestValue = value;
 			}
 		}
-        return bestIndex;
-    }
+		return bestIndex;
+	}
 
 
     private ArrayList<Individual> createChildrenByCrossOver() {
