@@ -2,6 +2,7 @@ package individual;
 
 import java.util.Random;
 
+import neuroevo.NeatParameters;
 import gene.*;
 import population.HistoricalMarkingManager;
 import population.Population;
@@ -12,13 +13,7 @@ public class Individual {
 	private static final double C_2 = 0.3;
 	private static final double C_3 = 0.3;
 	
-	private static final double MUTATION_PROBABILITY = 0.3;
-	private static final double PARAMETRIC_MUTATION_THRESHOLD = 0.2;
-	private static final double PARAMETRIC_MUTATION_PROBABILITY = 0.6;
-	
-	private static final double STRUCTURAL_MUTATION_ADDING_EDGE_PROBABILITY = 0.5;
-	private static final double STRUCTURAL_MUTATION_ADDING_NODE_PROBABILITY = 0.9;
-	
+
 	
 	private Genotype genotype;
 	private double fitness;
@@ -118,18 +113,18 @@ public class Individual {
 	}
 
 	public void mutate(){
-		if(rand.nextDouble() < PARAMETRIC_MUTATION_PROBABILITY){
+		if(rand.nextDouble() < NeatParameters.PARAMETRIC_MUTATION_PROBABILITY){
 			//Parametric mutation
 //			for(int i = genotype.getNodeCount(); i < genotype.getGenotypeSize(); i++){
 			for(int i = 0; i < genotype.getGenotypeSize(); i++){
-				if(rand.nextDouble() < PARAMETRIC_MUTATION_THRESHOLD) genotype.get(i).mutate(rand);
+				if(rand.nextDouble() < NeatParameters.PARAMETRIC_MUTATION_THRESHOLD) genotype.get(i).mutate(rand);
 			}
 		}else{
 			//Structural mutation
 			double prob = rand.nextDouble();
 			int tries = 9;
 			boolean success = false;
-			if(prob < STRUCTURAL_MUTATION_ADDING_EDGE_PROBABILITY){
+			if(prob < NeatParameters.STRUCTURAL_MUTATION_ADDING_EDGE_PROBABILITY){
 				//adding edge
 				while(!success && tries > 0){
 					int node1 = rand.nextInt(genotype.getNodeCount() - 2);
@@ -137,7 +132,7 @@ public class Individual {
 					success = genotype.addConnection(connect(genotype.get(node1).getMark(), genotype.get(node2).getMark(), false));
 					tries--;
 				}
-			}else if(prob < STRUCTURAL_MUTATION_ADDING_NODE_PROBABILITY){
+			}else if(prob < NeatParameters.STRUCTURAL_MUTATION_ADDING_NODE_PROBABILITY){
 				//adding node
 				while(!success && tries > 0){
 					int index = genotype.getNodeCount() + rand.nextInt(genotype.getGenotypeSize() - genotype.getNodeCount());
