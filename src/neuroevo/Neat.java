@@ -45,29 +45,6 @@ public class Neat {
     }
 
     //TODO: metodka pro rozrazeni do druhu;
-    //working in progress
-
-    //TODO: metodka pro vyber turnajem - Druh
-    private int selectSpecieByTournament() {
-        return 0;
-    }
-    //TODO: metodka pro vyber turnajem1 - Jedinec
-    private int selectIndividualByTournament(int specie) {
-        return 0;
-    }
-    //TODO: metodka pro krizeni
-    private ArrayList<Individual> createChildrenByCrossOver() {
-        return null;
-    }
-    //TODO: metodka pro mutaci
-    private ArrayList<Individual> mutateChildren(ArrayList<Individual> children) {
-        return null;
-    }
-
-    //TODO: metodka pro navrat nejlepsiho vysledku celeho behu NEATu
-
-
-	
     private void divideIntoSpecies(){
     	this.species = new ArrayList<ArrayList<Integer>>();
     	ArrayList<Integer> best = new ArrayList<Integer>();
@@ -98,7 +75,25 @@ public class Neat {
 			}
 		}
     }
-    	
+
+    //TODO: metodka pro vyber turnajem - Druh
+    private int selectSpecieByTournament() {
+        return 0;
+    }
+    //TODO: metodka pro vyber turnajem1 - Jedinec
+    private int selectIndividualByTournament(int specie) {
+        return 0;
+    }
+    //TODO: metodka pro krizeni
+    private ArrayList<Individual> createChildrenByCrossOver() {
+        return null;
+    }
+    //TODO: metodka pro mutaci
+    private ArrayList<Individual> mutateChildren(ArrayList<Individual> children) {
+        return null;
+    }
+
+    //TODO: metodka pro navrat nejlepsiho vysledku celeho behu NEATu
     public Individual getBestResult() {
         return population.getBest();
     }
