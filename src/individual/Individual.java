@@ -120,13 +120,14 @@ public class Individual {
 	public void mutate(){
 		if(rand.nextDouble() < PARAMETRIC_MUTATION_PROBABILITY){
 			//Parametric mutation
-			for(int i = genotype.getNodeCount(); i < genotype.getGenotypeSize(); i++){
+//			for(int i = genotype.getNodeCount(); i < genotype.getGenotypeSize(); i++){
+			for(int i = 0; i < genotype.getGenotypeSize(); i++){
 				if(rand.nextDouble() < PARAMETRIC_MUTATION_THRESHOLD) genotype.get(i).mutate(rand);
 			}
 		}else{
 			//Structural mutation
 			double prob = rand.nextDouble();
-			int tries = 5;
+			int tries = 9;
 			boolean success = false;
 			if(prob < STRUCTURAL_MUTATION_ADDING_EDGE_PROBABILITY){
 				//adding edge

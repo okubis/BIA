@@ -6,12 +6,14 @@ public class OutputNode extends Node {
 
 	public static final int OUTPUTS_COUNT = 3;
 	private double sigmoidParam;
+	private double bias;
 	
 	
 	
 	public OutputNode(double sigmoidParam, int mark) {
 		this.sigmoidParam = sigmoidParam;
 		this.mark = mark;
+		this.bias = 0;
 	}
 
 	@Override
@@ -32,12 +34,14 @@ public class OutputNode extends Node {
 	@Override
 	public double function(double sum) {
 		// TODO Auto-generated method stub
-		return 1/(1 + Math.pow(Math.E, -sigmoidParam*sum));
+		return 1/(1 + Math.pow(Math.E, -sigmoidParam*(sum + bias) ));
 	}
 
 	@Override
 	public void mutate(Random rand) {
-		this.sigmoidParam += rand.nextGaussian();
+//		sigmoidParam += rand.nextGaussian();
+		bias += rand.nextGaussian();
+		
 	}
 
 	@Override
