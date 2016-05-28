@@ -74,6 +74,7 @@ public class InitData {
         sb.append(" --vc="+SPEED);
         sb.append(" --offset-distance="+DISTANCE_OFFSET);
         sb.append(" --offset-azimuth="+YAW);
+        sb.append(" --disable-sound");
         // --telnet=socket,bi,100,127.0.0.1,6789,tcp
         sb.append(" --telnet=socket,bi,"+Hz+","+scp.getHost()+","+scp.getPort()+",tcp");
         return sb.toString();

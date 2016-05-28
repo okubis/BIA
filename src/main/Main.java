@@ -61,7 +61,8 @@ public class Main extends JFrame {
         numberOfGenerations = 10;
         System.out.println("Specify where the output should be stored (Path/fileName)");
         Scanner sc = new Scanner(System.in);
-        outputFile = sc.nextLine();
+        //outputFile = sc.nextLine();
+        outputFile = "";
         // should be closed, but not in the case of console, right?
         //inBuffer.close();
     }

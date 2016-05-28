@@ -93,7 +93,7 @@ public class Toolbox extends AbstractToolbox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-*/
+
         setAltitude(InitData.getInitialALTITUDE());
         setLatitude(InitData.getInitialLATITUDE());
         setLongitude(InitData.getInitialLONGITUDE());
@@ -106,6 +106,7 @@ public class Toolbox extends AbstractToolbox {
         setAileron(InitData.getInitialAILERON());
         setElevator(InitData.getInitialELEVATOR());
         setRudder(InitData.getInitialRUDDER());
+        */
     }
 
     private void addDoubleManager(String name, Property caption){
