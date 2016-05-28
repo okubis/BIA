@@ -1,12 +1,13 @@
 package main;
 
 import com.layer.SocketConnectionParameters;
+import individual.GenotypeFileManager;
 import individual.Individual;
 import neuroevo.Neat;
+import population.MarkingsFileManager;
 
 import javax.swing.*;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,7 +22,7 @@ public class Main extends JFrame {
     private static int numberOfGenerations;
     private static final int FIRST_SOCKET = 2000;
     private static Individual result;
-    private static String outputFile;
+    private static String outputFolder;
 
 
     public static void main(String[] args) throws Exception {
@@ -32,11 +33,16 @@ public class Main extends JFrame {
         result = neatInstance.getBestResult();
         saveResult();
         System.out.println("result in the form of a String: ");
-        System.out.println(result.toString());
+        System.out.println("Fitness: " + result.getFitness());
+        System.out.println("---------------------------------");
+        System.out.println(result.getGenotype().toString());
     }
 
-    private static void saveResult() {
-        // use outputFile
+    private static void saveResult() throws FileNotFoundException, UnsupportedEncodingException {
+        String markingsFileName = outputFolder + "markings.txt";
+        String genotypeFileName = outputFolder + "genotype.txt";
+        MarkingsFileManager.writeToFile(markingsFileName, neatInstance.getMarkings());
+        GenotypeFileManager.writeToFile(genotypeFileName, result.getGenotype());
     }
 
     private static void initSocketConnectionParameters() {
@@ -59,10 +65,10 @@ public class Main extends JFrame {
         System.out.println("Specify number of generations computed by the NEAT algorithm: ");
         // numberOfGenerations = readInteger(inBuffer);
         numberOfGenerations = 10;
-        System.out.println("Specify where the output should be stored (Path/fileName)");
+        System.out.println("Specify where the output should be stored (Path to folder)");
         Scanner sc = new Scanner(System.in);
         //outputFile = sc.nextLine();
-        outputFile = "";
+        outputFolder = System.getProperty("user.home") + File.separator + "NEAT_OUT" + File.separator;
         // should be closed, but not in the case of console, right?
         //inBuffer.close();
     }

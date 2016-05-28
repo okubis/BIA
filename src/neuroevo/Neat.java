@@ -2,6 +2,7 @@ package neuroevo;
 
 import com.layer.SocketConnectionParameters;
 import individual.Individual;
+import population.HistoricalMarkingManager;
 import population.Population;
 import population.PopulationManager;
 
@@ -143,4 +144,13 @@ public class Neat {
     public Individual getBestResult() {
         return population.getBest();
     }
+
+	/**
+	 * method for obtaining of the historical markings used by the evolution
+	 *
+	 * @return the historical markings for nodes and connections
+	 */
+	public HistoricalMarkingManager getMarkings() {
+		return populationManager.getMarks();
+	}
 }
