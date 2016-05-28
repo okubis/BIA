@@ -5,7 +5,6 @@ import org.flightgear.fgfsclient.FGFSConnection;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.lang.Runtime;
 
 /**
  * Created by okubis on 5/17/16.
@@ -33,11 +32,17 @@ public class Toolbox extends AbstractToolbox {
         }
 
         // init connection
-        try {
-            fgfs = new FGFSConnection(socketParameters.getHost(), socketParameters.getPort());
-        }catch(IOException ioe){
-            exceptionHandler(ioe);
-            return false;
+        boolean notYetInitialized = true;
+        long t = System.currentTimeMillis();
+        while (notYetInitialized) {
+            try {
+                fgfs = new FGFSConnection(socketParameters.getHost(), socketParameters.getPort());
+                notYetInitialized = false;
+            } catch (IOException ioe) {
+                // SWALLOW EXCEPTION
+                //exceptionHandler(ioe);
+                //return false;
+            }
         }
         initProperties();
 
@@ -69,26 +74,26 @@ public class Toolbox extends AbstractToolbox {
         addDoubleManager("/orientation/roll-deg",Property.ROLL);
         addDoubleManager("/orientation/pitch-deg",Property.PITCH);
         addDoubleManager("/orientation/heading-deg",Property.YAW);
-
+/*
         try {
             System.out.println("Altitude: " + properties.get(Property.ALTITUDE).retrieveValue(fgfs));
 
-        System.out.println("Latitude: " + properties.get(Property.LATITUDE).retrieveValue(fgfs));
-        System.out.println("Longitude: " + properties.get(Property.LONGITUDE).retrieveValue(fgfs));
-        System.out.println("Speed: " + properties.get(Property.SPEED).retrieveValue(fgfs));
+            System.out.println("Latitude: " + properties.get(Property.LATITUDE).retrieveValue(fgfs));
+            System.out.println("Longitude: " + properties.get(Property.LONGITUDE).retrieveValue(fgfs));
+            System.out.println("Speed: " + properties.get(Property.SPEED).retrieveValue(fgfs));
 
-        System.out.println("Roll: " + properties.get(Property.ROLL).retrieveValue(fgfs));
-        System.out.println("Pitch: " + properties.get(Property.PITCH).retrieveValue(fgfs));
-        System.out.println("Yaw: " + properties.get(Property.YAW).retrieveValue(fgfs));
+            System.out.println("Roll: " + properties.get(Property.ROLL).retrieveValue(fgfs));
+            System.out.println("Pitch: " + properties.get(Property.PITCH).retrieveValue(fgfs));
+            System.out.println("Yaw: " + properties.get(Property.YAW).retrieveValue(fgfs));
 
-        System.out.println("controls: " + properties.get(Property.AILERON).retrieveValue(fgfs));
-        System.out.println("controls: " + properties.get(Property.ELEVATOR).retrieveValue(fgfs));
-        System.out.println("controls: " + properties.get(Property.RUDDER).retrieveValue(fgfs));
+            System.out.println("controls: " + properties.get(Property.AILERON).retrieveValue(fgfs));
+            System.out.println("controls: " + properties.get(Property.ELEVATOR).retrieveValue(fgfs));
+            System.out.println("controls: " + properties.get(Property.RUDDER).retrieveValue(fgfs));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+*/
         setAltitude(InitData.getInitialALTITUDE());
         setLatitude(InitData.getInitialLATITUDE());
         setLongitude(InitData.getInitialLONGITUDE());

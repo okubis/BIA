@@ -30,6 +30,7 @@ public class Evaluator implements Callable<Individual> {
         this.individual = ind;
         this.timeLimit = timeLimit;
         this.ann = new ANN(ind.getGenotype());
+        this.period = period;
     }
 
     /**

@@ -41,8 +41,9 @@ public class Main extends JFrame {
 
     private static void initSocketConnectionParameters() {
         scp = new ArrayList<SocketConnectionParameters>(populationSize);
-        for (int i = 0; i < populationSize; i++) {
+        for (int i = 0; i <= populationSize; i++) {
             SocketConnectionParameters conParams = new SocketConnectionParameters("localhost", FIRST_SOCKET + i);
+            scp.add(conParams);
         }
     }
 
@@ -50,11 +51,14 @@ public class Main extends JFrame {
         BufferedInputStream inBuffer = new BufferedInputStream(System.in);
         System.out
                 .println("Specify number of threads this algorithm can use to evaluate fitness function in parallel: ");
-        numberOfThreads = readInteger(inBuffer);
+        // numberOfThreads = readInteger(inBuffer);
+        numberOfThreads = 3;
         System.out.println("Specify size of population used by the NEAT algorithm: ");
-        populationSize = readInteger(inBuffer);
+        //populationSize = readInteger(inBuffer);
+        populationSize = 50;
         System.out.println("Specify number of generations computed by the NEAT algorithm: ");
-        numberOfGenerations = readInteger(inBuffer);
+        // numberOfGenerations = readInteger(inBuffer);
+        numberOfGenerations = 10;
         System.out.println("Specify where the output should be stored (Path/fileName)");
         Scanner sc = new Scanner(System.in);
         outputFile = sc.nextLine();
