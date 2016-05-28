@@ -2,6 +2,7 @@ package ann;
 
 import com.layer.AbstractToolbox;
 import com.layer.SocketConnectionParameters;
+import com.layer.TimeConstants;
 import com.layer.Toolbox;
 import individual.Individual;
 
@@ -39,9 +40,9 @@ public class Evaluator implements Callable<Individual> {
      * @throws Exception
      */
     public Individual call() throws Exception {
-
-        int numOfCycles = (int) (timeLimit/period);
-        double[][] positions = new double[numOfCycles][3]; //altitude, longitude, latitude - corresponds to getPenalty in toolbox
+        long denominator = Math.max(period, TimeConstants.MINIMAL_TIME_NEEDED_FOR_RETRIEVING_VALUES);
+        Long numOfCycles = timeLimit / denominator;
+        double[][] positions = new double[numOfCycles.intValue()][3]; //altitude, longitude, latitude - corresponds to getPenalty in toolbox
         ANNInputData in = new ANNInputData();
         ANNOutputData out = new ANNOutputData();
         double fitness = 0.;
@@ -72,6 +73,7 @@ public class Evaluator implements Callable<Individual> {
                 positions[i][1] = in.getLongitude();
                 positions[i][2] = in.getLatitude();
 
+
                 // compute inputs of the simulator by evaluating ANN over ANNInputData
                 out = ann.compute(in);
 
@@ -81,9 +83,10 @@ public class Evaluator implements Callable<Individual> {
                 toolbox.setRudder(out.getRudder());
 
                 long currentTime = System.currentTimeMillis();
-                while (currentTime - startTime < period) {
+                while (currentTime - startTime < denominator) {
                     currentTime = System.currentTimeMillis();
                 }
+
             }
 
             // end flight
@@ -97,6 +100,13 @@ public class Evaluator implements Callable<Individual> {
             fitness /= numOfCycles;
         } catch (Exception e) {
             fitness = Double.MAX_VALUE;
+        } finally {
+            try {
+                // end flight
+                toolbox.endFlight();
+            } catch (Exception e) {
+
+            }
         }
         //set fitness of Individual;
         individual.setFitness(fitness);

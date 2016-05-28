@@ -115,7 +115,7 @@ public class Population {
 				// we have received another evaluated individual, so let's get yet another one,
 				// or end if it was the last one
 				received++;
-				System.out.println(received);
+				System.out.print(received + " ,");
 
 			} catch (Exception e) {
 				System.err.println("SYSTEM SPATNE NASTAVIL NEKTERE VECI... s pozdravem, Vas MICROSOFT (TM)");
@@ -124,10 +124,11 @@ public class Population {
 				e.printStackTrace();
 				System.err.println("------------------------------------");
 
-				// do not interrupt, but set
+				// do not interrupt
 				//errors = true;
 			}
 		}
+		System.out.println();
 	}
 
 	/**

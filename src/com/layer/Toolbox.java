@@ -24,8 +24,9 @@ public class Toolbox extends AbstractToolbox {
     @Override
     public boolean initFlight(SocketConnectionParameters socketParameters){
         try {
-            //sim = new ProcessBuilder("fgfs",InitData.getFGFSArguments(socketParameters)).start();
-            sim =  Runtime.getRuntime().exec("fgfs"+ InitData.getFGFSArguments(socketParameters));
+            ProcessBuilder pb = new ProcessBuilder(InitData.getProcessBuilderArgumentsList(socketParameters));
+            sim = pb.start();
+            //sim =  Runtime.getRuntime().exec("fgfs"+ InitData.getFGFSArguments(socketParameters));
             Thread.sleep(TimeConstants.FGFS_INIT_TIME_CONST);
         } catch (Exception e) {
             exceptionHandler(e);
@@ -35,6 +36,10 @@ public class Toolbox extends AbstractToolbox {
         boolean notYetInitialized = true;
         long t = System.currentTimeMillis();
         while (notYetInitialized) {
+            if (System.currentTimeMillis() - t > 10000) {
+                System.err.println("waiting to long: " + socketParameters.getPort());
+                break;
+            }
             try {
                 fgfs = new FGFSConnection(socketParameters.getHost(), socketParameters.getPort());
                 notYetInitialized = false;
@@ -44,6 +49,8 @@ public class Toolbox extends AbstractToolbox {
                 //return false;
             }
         }
+
+        // init properties
         initProperties();
 
         for(Property p : Property.values()){
@@ -74,39 +81,6 @@ public class Toolbox extends AbstractToolbox {
         addDoubleManager("/orientation/roll-deg",Property.ROLL);
         addDoubleManager("/orientation/pitch-deg",Property.PITCH);
         addDoubleManager("/orientation/heading-deg",Property.YAW);
-    /*
-        try {
-            System.out.println("Altitude: " + properties.get(Property.ALTITUDE).retrieveValue(fgfs));
-
-            System.out.println("Latitude: " + properties.get(Property.LATITUDE).retrieveValue(fgfs));
-            System.out.println("Longitude: " + properties.get(Property.LONGITUDE).retrieveValue(fgfs));
-            System.out.println("Speed: " + properties.get(Property.SPEED).retrieveValue(fgfs));
-
-            System.out.println("Roll: " + properties.get(Property.ROLL).retrieveValue(fgfs));
-            System.out.println("Pitch: " + properties.get(Property.PITCH).retrieveValue(fgfs));
-            System.out.println("Yaw: " + properties.get(Property.YAW).retrieveValue(fgfs));
-
-            System.out.println("controls: " + properties.get(Property.AILERON).retrieveValue(fgfs));
-            System.out.println("controls: " + properties.get(Property.ELEVATOR).retrieveValue(fgfs));
-            System.out.println("controls: " + properties.get(Property.RUDDER).retrieveValue(fgfs));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        setAltitude(InitData.getInitialALTITUDE());
-        setLatitude(InitData.getInitialLATITUDE());
-        setLongitude(InitData.getInitialLONGITUDE());
-     //   setSpeed(InitData.getInitialSPEED());
-
-        setRoll(InitData.getInitialROLL());
-        setPitch(InitData.getInitialPITCH());
-        setYaw(InitData.getInitialYAW());
-
-        setAileron(InitData.getInitialAILERON());
-        setElevator(InitData.getInitialELEVATOR());
-        setRudder(InitData.getInitialRUDDER());
-*/
     }
 
     private void addDoubleManager(String name, Property caption){

@@ -1,5 +1,8 @@
 package com.layer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * Simple class for initial constant values
@@ -82,5 +85,24 @@ public class InitData {
         // --telnet=socket,bi,100,127.0.0.1,6789,tcp
         sb.append(" --telnet=socket,bi,"+Hz+","+scp.getHost()+","+scp.getPort()+",tcp");
         return sb.toString();
+    }
+
+    protected static synchronized List<String> getProcessBuilderArgumentsList(SocketConnectionParameters scp) {
+        ArrayList<String> arguments = new ArrayList<String>();
+        arguments.add("fgfs");
+        arguments.add("--timeofday=noon");
+        arguments.add("--altitude=" + ALTITUDE);
+        arguments.add("--lat=" + LATITUDE);
+        arguments.add("--lon=" + LONGITUDE);
+        arguments.add("--prop:/controls/engines/engine/throttle=" + THROTTLE);
+        arguments.add("--prop:/engines/engine[0]/rpm=" + ENGINE_RPMS);
+        arguments.add("--vc=" + SPEED);
+        arguments.add("--offset-distance=" + DISTANCE_OFFSET);
+        arguments.add("--offset-azimuth=" + YAW);
+        arguments.add("--disable-sound");
+        arguments.add("--turbulence=" + TURBULENCE);
+        // --telnet=socket,bi,100,127.0.0.1,6789,tcp
+        arguments.add("--telnet=socket,bi," + Hz + "," + scp.getHost() + "," + scp.getPort() + ",tcp");
+        return arguments;
     }
 }
