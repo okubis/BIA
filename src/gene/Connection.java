@@ -33,7 +33,7 @@ public class Connection extends Gene{
 	}
 	
 	public void updateWeightByGaussianNoise(Random rand){
-		updateWeight(rand.nextGaussian());
+		updateWeight(3*rand.nextGaussian());
 	}
 	
 	public int getStart() {

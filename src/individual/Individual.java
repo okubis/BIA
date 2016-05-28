@@ -7,10 +7,10 @@ import population.HistoricalMarkingManager;
 import java.util.Random;
 
 public class Individual {
-	private static final double SIMILARITY_THRESHOLD = 0.4;
-	private static final double C_1 = 0.4;
-	private static final double C_2 = 0.3;
-	private static final double C_3 = 0.3;
+	private static final double SIMILARITY_THRESHOLD = 0.5;
+	private static final double C_1 = 0.5;
+	private static final double C_2 = 0.45;
+	private static final double C_3 = 0.05;
 	
 
 	
@@ -31,7 +31,7 @@ public class Individual {
 		this.marks = m;
 		this.rand = new Random();
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
-			genotype.addNode(new InputNode(49, i));
+			genotype.addNode(new InputNode(4, i));
 //			genotype.addNode(new InputNode(rand.nextGaussian(), i));
 		}
 		for(int i = InputNode.INPUTS_COUNT; i < InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT; i++){
@@ -58,7 +58,7 @@ public class Individual {
 		if(genotype.disableConnection(con)){
 			NodeTuple tuple = new NodeTuple(con.getStart(), con.getEnd());
 			int nodeMark = marks.getNodeMark(tuple);
-			HiddenNode inserted = new HiddenNode(49, nodeMark);
+			HiddenNode inserted = new HiddenNode(4, nodeMark);
 			if(genotype.addHiddenNode(inserted, con)){
 				genotype.addConnection(new Connection(con.getStart(), nodeMark, marks.getConnectionMark(new NodeTuple(con.getStart(), nodeMark)), 1, false));
 				genotype.addConnection(new Connection(nodeMark, con.getEnd(), marks.getConnectionMark(new NodeTuple(nodeMark, con.getEnd())), con.getWeight(), false));
