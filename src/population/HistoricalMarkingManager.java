@@ -4,6 +4,8 @@ import gene.InputNode;
 import gene.NodeTuple;
 import gene.OutputNode;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class HistoricalMarkingManager {
@@ -35,5 +37,25 @@ public class HistoricalMarkingManager {
 			nodes.put(tuple, mark);
 		}
 		return mark;
+	}
+	
+	public String toString(){
+		StringBuilder s = new StringBuilder("Nodes: " + nodes.size() + " \n");
+		String[] marksStrings = new String[nodes.size() + InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT];
+		for (NodeTuple t : nodes.keySet()) {
+			marksStrings[nodes.get(t)] = ("From: " + t.getStart() + " , to: " + t.getEnd() + " , mark: " + nodes.get(t) + " \n");
+		}
+		for(int i = InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT; i < nodes.size() + InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT; i++){
+			s.append(marksStrings[i]);
+		}
+		s.append("Connections: " + connections.size() + " \n");
+		marksStrings = new String[connections.size()];
+		for (NodeTuple t : connections.keySet()) {
+			marksStrings[connections.get(t)] = ("From: " + t.getStart() + " , to: " + t.getEnd() + " , connection: " + connections.get(t) + " \n");
+		}
+		for(int i = 0; i < connections.size(); i++){
+			s.append(marksStrings[i]);
+		}
+		return s.toString();
 	}
 }
