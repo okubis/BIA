@@ -7,7 +7,7 @@ package com.layer;
  * Created by okubis on 5/17/16.
  */
 public class InitData {
-    private static final double ALTITUDE = 2000.0;
+    private static final double ALTITUDE = 9000.0;
     private static final double LATITUDE = 37.59850793;
     private static final double LONGITUDE = -122.3214854;
     private static final double SPEED = 80.0;
@@ -30,6 +30,9 @@ public class InitData {
 
     // CONNECTION
     private static final int Hz = 100;
+
+    // value for turbulence
+    private static final double TURBULENCE = 0.65; // ranges from 0.0 (calm) to 1.0 (severe)
 
 
     protected static double getInitialALTITUDE() {
@@ -75,6 +78,7 @@ public class InitData {
         sb.append(" --offset-distance="+DISTANCE_OFFSET);
         sb.append(" --offset-azimuth="+YAW);
         sb.append(" --disable-sound");
+        sb.append(" --turbulence=" + TURBULENCE);
         // --telnet=socket,bi,100,127.0.0.1,6789,tcp
         sb.append(" --telnet=socket,bi,"+Hz+","+scp.getHost()+","+scp.getPort()+",tcp");
         return sb.toString();

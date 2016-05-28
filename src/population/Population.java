@@ -6,8 +6,6 @@ import com.layer.TimeConstants;
 import individual.Individual;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.*;
 
 public class Population {
@@ -119,11 +117,14 @@ public class Population {
 				received++;
 
 			} catch (Exception e) {
-				System.err.println("SYSTEM SPATNE NASTAVIL NEKTERE VECI... s pozdravem, Ty nam taky Vas MICROSOFT (TM)");
+				System.err.println("SYSTEM SPATNE NASTAVIL NEKTERE VECI... s pozdravem, Vas MICROSOFT (TM)");
 				System.err.println(e.getMessage());
 				System.err.println("------------------------------------");
 				e.printStackTrace();
-				errors = true;
+				System.err.println("------------------------------------");
+
+				// do not interrupt, but set
+				//errors = true;
 			}
 		}
 	}

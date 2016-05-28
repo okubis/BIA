@@ -44,57 +44,60 @@ public class Evaluator implements Callable<Individual> {
         double[][] positions = new double[numOfCycles][3]; //altitude, longitude, latitude - corresponds to getPenalty in toolbox
         ANNInputData in = new ANNInputData();
         ANNOutputData out = new ANNOutputData();
+        double fitness = 0.;
 
         // start flight
+        try {
+            toolbox.initFlight(scp);
+            for (int i = 0; i < numOfCycles; i++) {
+                long startTime = System.currentTimeMillis();
 
-        toolbox.initFlight(scp);
-        for(int i =0;i<numOfCycles;i++){
-            long startTime = System.currentTimeMillis();
+                // retrieve location
+                in.setAltitude(toolbox.getAltitude());
+                in.setLatitude(toolbox.getLatitude());
+                in.setLongitude(toolbox.getLongitude());
 
-            // retrieve location
-            in.setAltitude(toolbox.getAltitude());
-            in.setLatitude(toolbox.getLatitude());
-            in.setLongitude(toolbox.getLongitude());
+                // retrieve orientation
+                in.setRoll(toolbox.getRoll());
+                in.setPitch(toolbox.getPitch());
+                in.setYaw(toolbox.getYaw());
 
-            // retrieve orientation
-            in.setRoll(toolbox.getRoll());
-            in.setPitch(toolbox.getPitch());
-            in.setYaw(toolbox.getYaw());
+                // retrieve control setting
+                in.setAileron(toolbox.getAileronStatus());
+                in.setElevator(toolbox.getElevatorStatus());
+                in.setRudder(toolbox.getRudderStatus());
 
-            // retrieve control setting
-            in.setAileron(toolbox.getAileronStatus());
-            in.setElevator(toolbox.getElevatorStatus());
-            in.setRudder(toolbox.getRudderStatus());
+                // store position for fitness computation
+                positions[i][0] = in.getAltitude();
+                positions[i][1] = in.getLongitude();
+                positions[i][2] = in.getLatitude();
 
-            // store position for fitness computation
-            positions[i][0] = in.getAltitude();
-            positions[i][1] = in.getLongitude();
-            positions[i][2] = in.getLatitude();
+                // compute inputs of the simulator by evaluating ANN over ANNInputData
+                out = ann.compute(in);
 
-            // compute inputs of the simulator by evaluating ANN over ANNInputData
-            out = ann.compute(in);
+                // set aileron, elevator and rudder
+                toolbox.setAileron(out.getAileron());
+                toolbox.setElevator(out.getElevator());
+                toolbox.setRudder(out.getRudder());
 
-            // set aileron, elevator and rudder
-            toolbox.setAileron(out.getAileron());
-            toolbox.setElevator(out.getElevator());
-            toolbox.setRudder(out.getRudder());
-
-            long currentTime = System.currentTimeMillis();
-            while(currentTime-startTime<period){
-                currentTime = System.currentTimeMillis();
+                long currentTime = System.currentTimeMillis();
+                while (currentTime - startTime < period) {
+                    currentTime = System.currentTimeMillis();
+                }
             }
+
+            // end flight
+            toolbox.endFlight();
+
+            // compute fitness of Individual
+
+            for (int i = 0; i < numOfCycles; i++) {
+                fitness += toolbox.getPenalty(positions[i][0], positions[i][1], positions[i][2]);
+            }
+            fitness /= numOfCycles;
+        } catch (Exception e) {
+            fitness = Double.MAX_VALUE;
         }
-
-        // end flight
-        toolbox.endFlight();
-
-        // compute fitness of Individual
-        double fitness = 0.;
-        for(int i=0;i<numOfCycles;i++){
-            fitness+=toolbox.getPenalty(positions[i][0],positions[i][1],positions[i][2]);
-        }
-        fitness/=numOfCycles;
-
         //set fitness of Individual;
         individual.setFitness(fitness);
         return individual;
