@@ -2,9 +2,17 @@ package individual;
 
 import gene.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Random;
+import java.util.Scanner;
+
+import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 public class Genotype {
 	private ArrayList<Gene> genotype;
@@ -71,6 +79,10 @@ public class Genotype {
 			}
 		}
 		return false;
+	}
+	
+	protected void addConnectionWithoutCheck(Connection con){
+		genotype.add(con);
 	}
 	
 	public boolean addConnectionRecurrent(Connection con){
@@ -166,14 +178,13 @@ public class Genotype {
 
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder("Gene count: " + this.getGenotypeSize() + "\n");
-		s.append("Node count: " + this.nodeCount + "\n");
+		StringBuilder s = new StringBuilder("Gene count: " + this.getGenotypeSize() + " \n");
+		s.append("Node count: " + this.nodeCount + " \n");
 		for (int i = 0; i < this.getGenotypeSize(); i++) {
-			s.append(genotype.get(i).toString() + "\n");
+			s.append(genotype.get(i).toString() + " \n");
 		}
 		return s.toString();
 	}
-	
 	
 	
 }

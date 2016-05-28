@@ -13,6 +13,12 @@ public class HiddenNode extends Node {
 		this.bias = 0;
 	}
 	
+	public HiddenNode(double sigmoidParam, int mark, double bias) {
+		this.sigmoidParam = sigmoidParam;
+		this.mark = mark;
+		this.bias = bias;
+	}
+	
 	@Override
 	public boolean isInput() {
 		return false;
@@ -51,8 +57,8 @@ public class HiddenNode extends Node {
 
 	@Override
 	public String toString() {
-		return "HiddenNode [sigmoidParam=" + sigmoidParam + ", bias=" + bias
-				+ ", mark=" + mark + "]";
+		return "HiddenNode [ sigmoidParam = " + sigmoidParam + " , bias = " + bias
+				+ " , mark = " + mark + " ]";
 	}
 
 

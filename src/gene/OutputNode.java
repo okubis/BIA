@@ -15,6 +15,12 @@ public class OutputNode extends Node {
 		this.mark = mark;
 		this.bias = 0;
 	}
+	
+	public OutputNode(double sigmoidParam, int mark, double bias) {
+		this.sigmoidParam = sigmoidParam;
+		this.mark = mark;
+		this.bias = bias;
+	}
 
 	@Override
 	public boolean isInput() {
@@ -50,8 +56,8 @@ public class OutputNode extends Node {
 
 	@Override
 	public String toString() {
-		return "OutputNode [sigmoidParam=" + sigmoidParam + ", bias=" + bias
-				+ ", mark=" + mark + "]";
+		return "OutputNode [ sigmoidParam = " + sigmoidParam + " , bias = " + bias
+				+ " , mark = " + mark + " ]";
 	}
 
 
