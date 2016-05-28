@@ -39,13 +39,13 @@ public class OutputNode extends Node {
 
 	@Override
 	public double function(double sum) {
-		return 1/(1 + Math.pow(Math.E, -sigmoidParam*(sum + bias) ));
+		return 20d/(1 + Math.pow(Math.E, -sigmoidParam*(sum + bias) )) - 10d;
 	}
 
 	@Override
 	public void mutate(Random rand) {
 //		sigmoidParam += rand.nextGaussian();
-		bias += rand.nextGaussian();
+		bias += 5*rand.nextGaussian();
 		
 	}
 

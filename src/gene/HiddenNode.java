@@ -46,7 +46,7 @@ public class HiddenNode extends Node {
 	@Override
 	public void mutate(Random rand) {
 //		sigmoidParam += rand.nextGaussian();
-		bias += rand.nextGaussian();
+		bias += 3*rand.nextGaussian();
 		
 	}
 

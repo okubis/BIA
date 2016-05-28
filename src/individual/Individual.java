@@ -35,7 +35,7 @@ public class Individual {
 //			genotype.addNode(new InputNode(rand.nextGaussian(), i));
 		}
 		for(int i = InputNode.INPUTS_COUNT; i < InputNode.INPUTS_COUNT + OutputNode.OUTPUTS_COUNT; i++){
-			genotype.addNode(new OutputNode(49, i));
+			genotype.addNode(new OutputNode(1, i));
 //			genotype.addNode(new OutputNode(rand.nextGaussian(), i));
 		}
 		for(int i = 0; i < InputNode.INPUTS_COUNT; i++){
