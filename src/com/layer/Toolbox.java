@@ -74,7 +74,7 @@ public class Toolbox extends AbstractToolbox {
         addDoubleManager("/orientation/roll-deg",Property.ROLL);
         addDoubleManager("/orientation/pitch-deg",Property.PITCH);
         addDoubleManager("/orientation/heading-deg",Property.YAW);
-/*
+    /*
         try {
             System.out.println("Altitude: " + properties.get(Property.ALTITUDE).retrieveValue(fgfs));
 
@@ -106,7 +106,7 @@ public class Toolbox extends AbstractToolbox {
         setAileron(InitData.getInitialAILERON());
         setElevator(InitData.getInitialELEVATOR());
         setRudder(InitData.getInitialRUDDER());
-        */
+*/
     }
 
     private void addDoubleManager(String name, Property caption){

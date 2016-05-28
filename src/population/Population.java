@@ -115,6 +115,7 @@ public class Population {
 				// we have received another evaluated individual, so let's get yet another one,
 				// or end if it was the last one
 				received++;
+				System.out.println(received);
 
 			} catch (Exception e) {
 				System.err.println("SYSTEM SPATNE NASTAVIL NEKTERE VECI... s pozdravem, Vas MICROSOFT (TM)");

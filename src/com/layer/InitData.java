@@ -7,7 +7,7 @@ package com.layer;
  * Created by okubis on 5/17/16.
  */
 public class InitData {
-    private static final double ALTITUDE = 9000.0;
+    private static final double ALTITUDE = 5000.0;
     private static final double LATITUDE = 37.59850793;
     private static final double LONGITUDE = -122.3214854;
     private static final double SPEED = 80.0;

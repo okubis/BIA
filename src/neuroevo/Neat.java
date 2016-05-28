@@ -39,8 +39,9 @@ public class Neat {
     public void Evolve(int numberOfGenerations) {
         population = populationManager.init_population();
         for (int i = 0; i < numberOfGenerations; i++) {
-            ArrayList<Individual> newIndividuals = null;
-            divideIntoSpecies();
+			System.out.println("computing generation " + i);
+			ArrayList<Individual> newIndividuals = null;
+			divideIntoSpecies();
             newIndividuals = createChildrenByCrossOver();
             newIndividuals = mutateChildren(newIndividuals);
             newIndividuals.add(population.getBest());
