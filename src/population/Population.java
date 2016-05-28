@@ -129,6 +129,7 @@ public class Population {
 			}
 		}
 		System.out.println();
+		executor.shutdown();
 	}
 
 	/**

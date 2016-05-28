@@ -1,11 +1,16 @@
 package neuroevo;
 
 import com.layer.SocketConnectionParameters;
+import individual.GenotypeFileManager;
 import individual.Individual;
 import population.HistoricalMarkingManager;
+import population.MarkingsFileManager;
 import population.Population;
 import population.PopulationManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Random;
 /**
@@ -46,8 +51,12 @@ public class Neat {
             newIndividuals = mutateChildren(newIndividuals);
             newIndividuals.add(population.getBest());
             population = populationManager.evaluatePopulation(newIndividuals);
-        }
-    }
+			try {
+				saveResult(i);
+			} catch (Exception e) {
+			}
+		}
+	}
 
     /**
      * changes global variable species, no need for its initialization besides the call of this function
@@ -153,5 +162,13 @@ public class Neat {
 	 */
 	public HistoricalMarkingManager getMarkings() {
 		return populationManager.getMarks();
+	}
+
+	private void saveResult(int i) throws FileNotFoundException, UnsupportedEncodingException {
+		String outputFolder = System.getProperty("user.home") + File.separator + "NEAT_OUT" + File.separator;
+		String markingsFileName = outputFolder + "markings_" + i + ".txt";
+		String genotypeFileName = outputFolder + "genotype_" + i + ".txt";
+		MarkingsFileManager.writeToFile(markingsFileName, populationManager.getMarks());
+		GenotypeFileManager.writeToFile(genotypeFileName, population.getBest().getGenotype());
 	}
 }
