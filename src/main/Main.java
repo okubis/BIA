@@ -8,6 +8,7 @@ import population.MarkingsFileManager;
 
 import javax.swing.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -54,17 +55,18 @@ public class Main extends JFrame {
     }
 
     private static void readInput() throws Exception {
+        System.out.println("Program is running. started at: " + new SimpleDateFormat("HH.mm.ss").format(new java.util.Date()));
         BufferedInputStream inBuffer = new BufferedInputStream(System.in);
-        System.out
-                .println("Specify number of threads this algorithm can use to evaluate fitness function in parallel: ");
+        //System.out
+        //        .println("Specify number of threads this algorithm can use to evaluate fitness function in parallel: ");
         // numberOfThreads = readInteger(inBuffer);
         numberOfThreads = 3;
-        System.out.println("Specify size of population used by the NEAT algorithm: ");
+        //System.out.println("Specify size of population used by the NEAT algorithm: ");
         //populationSize = readInteger(inBuffer);
         populationSize = 50;
-        System.out.println("Specify number of generations computed by the NEAT algorithm: ");
+        //System.out.println("Specify number of generations computed by the NEAT algorithm: ");
         // numberOfGenerations = readInteger(inBuffer);
-        numberOfGenerations = 10;
+        numberOfGenerations = 1000;
         System.out.println("Specify where the output should be stored (Path to folder)");
         Scanner sc = new Scanner(System.in);
         //outputFile = sc.nextLine();
