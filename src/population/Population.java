@@ -5,10 +5,11 @@ import com.layer.SocketConnectionParameters;
 import com.layer.TimeConstants;
 import individual.Individual;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
-public class Population {
+public class Population implements Serializable {
 	private ArrayList<Individual> individuals;
 	private int indexOfBestSoFar;
 	private static ExecutorService executor;
@@ -162,6 +163,15 @@ public class Population {
 
 	public Individual getBest(){
 		return individuals.get(indexOfBestSoFar);
+	}
+
+	public boolean applyElitism(Individual previousBest) {
+		boolean alreadyBetterValue = false;
+		if (previousBest.getFitness() < individuals.get(indexOfBestSoFar).getFitness()) {
+			individuals.set(indexOfBestSoFar, previousBest);
+		} else
+			alreadyBetterValue = true;
+		return alreadyBetterValue;
 	}
 
 }

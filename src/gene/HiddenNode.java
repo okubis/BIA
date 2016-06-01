@@ -1,8 +1,9 @@
 package gene;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class HiddenNode extends Node {
+public class HiddenNode extends Node implements Serializable {
 
 	private double sigmoidParam;
 	private double bias;

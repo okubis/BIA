@@ -138,6 +138,13 @@ public class Toolbox extends AbstractToolbox {
         return Math.sqrt(Math.pow(t*altitudeVector - x1, 2) + Math.pow(t*longitudeVector - y1, 2) + Math.pow(t*latitudeVector - z1, 2));
     }
 
+
+    public double getPenalty(double altitude, double longitude, double latitude, double roll, double pitch, double yaw) {
+        double penalty = getPenalty(altitude, longitude, latitude);
+        double constant = Math.abs(roll - InitData.getInitialROLL()) + Math.abs(pitch - InitData.getInitialPITCH()) + Math.abs(yaw - InitData.getInitialYAW());
+        return penalty * constant;
+    }
+
     /**
      *  method that returns current altitude
      * @return current Altitude

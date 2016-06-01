@@ -47,8 +47,8 @@ public class ResultVisualizer {
     }
 
     private static void loadResult() throws FileNotFoundException, UnsupportedEncodingException {
-        String markingsFileName = inputFolder + "markings_40.txt";
-        String genotypeFileName = inputFolder + "genotype_40.txt";
+        String markingsFileName = inputFolder + "markings_20.txt";
+        String genotypeFileName = inputFolder + "genotype_20.txt";
         mngr = MarkingsFileManager.readFromFile(markingsFileName);
         Genotype g = GenotypeFileManager.readFromFile(genotypeFileName);
         Individual i = new Individual(g, mngr);

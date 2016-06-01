@@ -3,14 +3,12 @@ package neuroevo;
 import com.layer.SocketConnectionParameters;
 import individual.GenotypeFileManager;
 import individual.Individual;
-import population.HistoricalMarkingManager;
-import population.MarkingsFileManager;
-import population.Population;
-import population.PopulationManager;
+import population.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 /**
@@ -21,6 +19,7 @@ public class Neat {
     private PopulationManager populationManager;
     private ArrayList<ArrayList<Integer>> species; // index druhu => Arraylist indexu Individualu, kteri patri tomuto druhu
     private Random rand;
+	private int firstPopulationIndex;
 
     /**
      * constructor
@@ -34,7 +33,16 @@ public class Neat {
         populationManager = new PopulationManager(numberOfThreads, usableSockets, populationSize);
         species = new ArrayList<ArrayList<Integer>>();
         population = null;
-    }
+		firstPopulationIndex = 1;
+	}
+
+	public Neat(int numberOfThreads, ArrayList<SocketConnectionParameters> usableSockets, int populationSize, Population population, HistoricalMarkingManager marks, int startFrom) {
+		rand = new Random();
+		populationManager = new PopulationManager(numberOfThreads, usableSockets, populationSize, marks);
+		species = new ArrayList<ArrayList<Integer>>();
+		this.population = population;
+		firstPopulationIndex = startFrom;
+	}
 
     /**
      * method for running the NEAT
@@ -42,8 +50,14 @@ public class Neat {
      * @param numberOfGenerations number of generations the NEAT should run evolution for
      */
     public void Evolve(int numberOfGenerations) {
-        population = populationManager.init_population();
-        for (int i = 0; i < numberOfGenerations; i++) {
+		if (population == null) {
+			population = populationManager.init_population();
+		} else {
+			System.out.println("Population loaded");
+		}
+		for (int i = firstPopulationIndex; i <= numberOfGenerations; i++) {
+			System.out.println("current best result has fitness: " + population.getBest().getFitness());
+			System.out.println("Computed at: " + new SimpleDateFormat("HH.mm.ss").format(new java.util.Date()));
 			System.out.println("computing generation " + i + "/" + numberOfGenerations);
 			ArrayList<Individual> newIndividuals = null;
 			divideIntoSpecies();
@@ -168,7 +182,9 @@ public class Neat {
 		String outputFolder = System.getProperty("user.home") + File.separator + "NEAT_OUT" + File.separator;
 		String markingsFileName = outputFolder + "markings_" + i + ".txt";
 		String genotypeFileName = outputFolder + "genotype_" + i + ".txt";
+		String populationFileName = outputFolder + "population_" + i + ".ser";
 		MarkingsFileManager.writeToFile(markingsFileName, populationManager.getMarks());
 		GenotypeFileManager.writeToFile(genotypeFileName, population.getBest().getGenotype());
+		PopulationSerializationManager.exportToFile(populationFileName, population);
 	}
 }

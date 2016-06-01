@@ -4,7 +4,6 @@ import com.layer.SocketConnectionParameters;
 import individual.Individual;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by okubis on 5/26/16.
@@ -23,6 +22,17 @@ public class PopulationManager extends AbstractPopulationManager {
             this.numberOfThreads = numberOfThreads;
             this.usableSockets = usableSockets;
             this.marks = new HistoricalMarkingManager();
+            this.populationSize = populationSize;
+        }
+    }
+
+    public PopulationManager(int numberOfThreads, ArrayList<SocketConnectionParameters> usableSockets, int populationSize, HistoricalMarkingManager marks) {
+        if (populationSize > usableSockets.size()) {
+            throw new RuntimeException("MORE SOCKETS NEEDED");
+        } else {
+            this.numberOfThreads = numberOfThreads;
+            this.usableSockets = usableSockets;
+            this.marks = marks;
             this.populationSize = populationSize;
         }
     }

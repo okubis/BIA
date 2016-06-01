@@ -3,13 +3,14 @@
  */
 package gene;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * @author Eda
  *
  */
-public abstract class Gene {
+public abstract class Gene implements Serializable {
 	protected int mark;
 	
 	public int getMark(){

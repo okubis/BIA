@@ -4,11 +4,10 @@ import gene.InputNode;
 import gene.NodeTuple;
 import gene.OutputNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class HistoricalMarkingManager {
+public class HistoricalMarkingManager implements Serializable {
 	private HashMap<NodeTuple, Integer> connections;
 	
 	private HashMap<NodeTuple, Integer> nodes;

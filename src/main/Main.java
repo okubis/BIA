@@ -4,13 +4,15 @@ import com.layer.SocketConnectionParameters;
 import individual.GenotypeFileManager;
 import individual.Individual;
 import neuroevo.Neat;
+import population.HistoricalMarkingManager;
 import population.MarkingsFileManager;
+import population.Population;
+import population.PopulationSerializationManager;
 
 import javax.swing.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by okubis on 5/14/16.
@@ -24,12 +26,27 @@ public class Main extends JFrame {
     private static final int FIRST_SOCKET = 2000;
     private static Individual result;
     private static String outputFolder;
+    private static int index;
 
 
     public static void main(String[] args) throws Exception {
+
+
         readInput();
         initSocketConnectionParameters();
-        neatInstance = new Neat(numberOfThreads, scp, populationSize);
+
+        //TODO: IF YOU WANT TO CONTINUE IN EVALUATION OF PREVIOUS RUN, SET startFresh TO "false"
+        boolean startFresh = true;
+
+        if (startFresh) {
+            // PART 1
+            neatInstance = new Neat(numberOfThreads, scp, populationSize);
+        } else {
+            // PART 2
+            index = -1; //TODO: use the index of last saved population
+            neatInstance = new Neat(numberOfThreads, scp, populationSize, loadPopulation(index), loadMarkings(index), index + 1);
+        }
+
         neatInstance.Evolve(numberOfGenerations);
         result = neatInstance.getBestResult();
         saveResult();
@@ -37,6 +54,8 @@ public class Main extends JFrame {
         System.out.println("Fitness: " + result.getFitness());
         System.out.println("---------------------------------");
         System.out.println(result.getGenotype().toString());
+
+
     }
 
     private static void saveResult() throws FileNotFoundException, UnsupportedEncodingException {
@@ -44,6 +63,16 @@ public class Main extends JFrame {
         String genotypeFileName = outputFolder + "genotype.txt";
         MarkingsFileManager.writeToFile(markingsFileName, neatInstance.getMarkings());
         GenotypeFileManager.writeToFile(genotypeFileName, result.getGenotype());
+    }
+
+    private static HistoricalMarkingManager loadMarkings(int index) throws FileNotFoundException {
+        String markingsFileName = outputFolder + "markings_" + index + ".txt";
+        return MarkingsFileManager.readFromFile(markingsFileName);
+    }
+
+    private static Population loadPopulation(int index) throws FileNotFoundException {
+        String populationFileName = outputFolder + "population_" + index + ".ser";
+        return PopulationSerializationManager.importFromFile(populationFileName);
     }
 
     private static void initSocketConnectionParameters() {
@@ -60,15 +89,15 @@ public class Main extends JFrame {
         //System.out
         //        .println("Specify number of threads this algorithm can use to evaluate fitness function in parallel: ");
         // numberOfThreads = readInteger(inBuffer);
-        numberOfThreads = 3;
+        numberOfThreads = 2;
         //System.out.println("Specify size of population used by the NEAT algorithm: ");
         //populationSize = readInteger(inBuffer);
         populationSize = 50;
         //System.out.println("Specify number of generations computed by the NEAT algorithm: ");
         // numberOfGenerations = readInteger(inBuffer);
         numberOfGenerations = 1000;
-        System.out.println("Specify where the output should be stored (Path to folder)");
-        Scanner sc = new Scanner(System.in);
+        //System.out.println("Specify where the output should be stored (Path to folder)");
+        //Scanner sc = new Scanner(System.in);
         //outputFile = sc.nextLine();
         outputFolder = System.getProperty("user.home") + File.separator + "NEAT_OUT" + File.separator;
         // should be closed, but not in the case of console, right?

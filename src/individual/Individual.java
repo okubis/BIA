@@ -4,9 +4,10 @@ import gene.*;
 import neuroevo.NeatParameters;
 import population.HistoricalMarkingManager;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Individual {
+public class Individual implements Serializable {
 	private static final double SIMILARITY_THRESHOLD = 0.5;
 	private static final double C_1 = 0.5;
 	private static final double C_2 = 0.45;

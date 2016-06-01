@@ -1,8 +1,9 @@
 package gene;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class InputNode extends Node {
+public class InputNode extends Node implements Serializable {
 
 	public static final int INPUTS_COUNT = 9;
 	private double sigmoidParam;

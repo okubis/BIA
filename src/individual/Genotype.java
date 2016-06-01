@@ -2,19 +2,10 @@ package individual;
 
 import gene.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
 
-import com.sun.xml.internal.ws.api.pipe.NextAction;
-
-public class Genotype {
+public class Genotype implements Serializable {
 	private ArrayList<Gene> genotype;
 	private int nodeCount;
 	

@@ -1,6 +1,8 @@
 package gene;
 
-public abstract class Node extends Gene {
+import java.io.Serializable;
+
+public abstract class Node extends Gene implements Serializable {
 	public abstract boolean isInput();
 	public abstract boolean isOutput();
 	public abstract boolean isHidden();

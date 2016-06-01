@@ -27,6 +27,8 @@ public abstract class AbstractToolbox {
      */
     public abstract double getPenalty(double altitude, double longitude, double latitude);
 
+    public abstract double getPenalty(double altitude, double longitude, double latitude, double roll, double pitch, double yaw);
+
     /**
      *  method that returns current altitude
      * @return current Altitude

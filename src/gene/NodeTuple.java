@@ -1,6 +1,8 @@
 package gene;
 
-public class NodeTuple {
+import java.io.Serializable;
+
+public class NodeTuple implements Serializable {
 	private int start;
 	private int end;
 	

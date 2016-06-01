@@ -42,7 +42,7 @@ public class Evaluator implements Callable<Individual> {
     public Individual call() throws Exception {
         long denominator = Math.max(period, TimeConstants.MINIMAL_TIME_NEEDED_FOR_RETRIEVING_VALUES);
         Long numOfCycles = timeLimit / denominator;
-        double[][] positions = new double[numOfCycles.intValue()][3]; //altitude, longitude, latitude - corresponds to getPenalty in toolbox
+        double[][] positions = new double[numOfCycles.intValue()][6]; //altitude, longitude, latitude, (roll, pitch, yaw) - corresponds to getPenalty in toolbox
         ANNInputData in = new ANNInputData();
         ANNOutputData out = new ANNOutputData();
         double fitness = 0.;
@@ -72,6 +72,9 @@ public class Evaluator implements Callable<Individual> {
                 positions[i][0] = in.getAltitude();
                 positions[i][1] = in.getLongitude();
                 positions[i][2] = in.getLatitude();
+                positions[i][3] = in.getRoll();
+                positions[i][4] = in.getPitch();
+                positions[i][5] = in.getYaw();
 
 
                 // compute inputs of the simulator by evaluating ANN over ANNInputData
@@ -90,12 +93,13 @@ public class Evaluator implements Callable<Individual> {
             }
 
             // end flight
-            toolbox.endFlight();
+            while (!toolbox.endFlight()) {
+            }
 
             // compute fitness of Individual
 
             for (int i = 0; i < numOfCycles; i++) {
-                fitness += toolbox.getPenalty(positions[i][0], positions[i][1], positions[i][2]);
+                fitness += toolbox.getPenalty(positions[i][0], positions[i][1], positions[i][2], positions[i][3], positions[i][4], positions[i][5]);
             }
             fitness /= numOfCycles;
         } catch (Exception e) {

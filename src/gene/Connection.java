@@ -1,8 +1,9 @@
 package gene;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Connection extends Gene{
+public class Connection extends Gene implements Serializable {
 	private int start;
 	private int end;
 	private double weight;
