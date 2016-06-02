@@ -28,7 +28,7 @@ public class ResultVisualizer {
     private static ArrayList<SocketConnectionParameters> scp;
     private static final int FIRST_SOCKET = 2000;
 
-    private static final int index = 31;
+    private static final int index = 1;
 
 
     public static void main(String[] args) throws Exception {

@@ -142,7 +142,7 @@ public class Toolbox extends AbstractToolbox {
     public double getPenalty(double altitude, double longitude, double latitude, double roll, double pitch, double yaw) {
         double penalty = getPenalty(altitude, longitude, latitude);
         double constant = Math.abs(roll - InitData.getInitialROLL()) + Math.abs(pitch - InitData.getInitialPITCH()) + Math.abs(yaw - InitData.getInitialYAW());
-        return penalty * constant;
+        return (penalty * (constant + 1));
     }
 
     /**

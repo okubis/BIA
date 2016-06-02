@@ -36,7 +36,7 @@ public class Main extends JFrame {
         initSocketConnectionParameters();
 
         //TODO: IF YOU WANT TO CONTINUE IN EVALUATION OF PREVIOUS RUN, SET startFresh TO "false"
-        boolean startFresh = false;
+        boolean startFresh = true;
 
         if (startFresh) {
             // PART 1

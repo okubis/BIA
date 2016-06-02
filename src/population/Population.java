@@ -63,7 +63,9 @@ public class Population implements Serializable {
 	private ArrayList<Individual> createNewIndividuals(int populationSize, HistoricalMarkingManager marks){
 		ArrayList<Individual> newIndividuals = new ArrayList<Individual>(populationSize);
 		for(int i=0;i<populationSize;i++){
-			newIndividuals.add(new Individual(marks));
+			Individual individ = new Individual(marks);
+			individ.setFitness(Double.MAX_VALUE);
+			newIndividuals.add(individ);
 		}
 		return newIndividuals;
 	}
@@ -104,7 +106,7 @@ public class Population implements Serializable {
 		}
 		individuals.add(newIndividuals.get(populationSize - 1));
 
-		while ((received < populationSize) && !errors) {
+		while ((received < populationSize - 1) && !errors) {
 			try {
 				// wait until some Individual is evaluated
 				Future<Individual> resultFuture = completionService.take(); // blocks if none available
