@@ -36,14 +36,14 @@ public class Main extends JFrame {
         initSocketConnectionParameters();
 
         //TODO: IF YOU WANT TO CONTINUE IN EVALUATION OF PREVIOUS RUN, SET startFresh TO "false"
-        boolean startFresh = true;
+        boolean startFresh = false;
 
         if (startFresh) {
             // PART 1
             neatInstance = new Neat(numberOfThreads, scp, populationSize);
         } else {
             // PART 2
-            index = -1; //TODO: use the index of last saved population
+            index = 31; //TODO: use the index of last saved population
             neatInstance = new Neat(numberOfThreads, scp, populationSize, loadPopulation(index), loadMarkings(index), index + 1);
         }
 

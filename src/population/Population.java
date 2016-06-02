@@ -97,10 +97,12 @@ public class Population implements Serializable {
 		executor = Executors.newFixedThreadPool(numberOfThreads);
 		completionService = new ExecutorCompletionService<Individual>(executor);
 
-		for(int i =0;i<populationSize;i++){
+		for (int i = 0; i < populationSize - 1; i++) {
+
 			Evaluator evaluator = new Evaluator(usableSockets.get(i),newIndividuals.get(i), TimeConstants.EVALUATOR_TIMELIMIT,TimeConstants.EVALUATION_PERIOD);
 			completionService.submit(evaluator);
 		}
+		individuals.add(newIndividuals.get(populationSize - 1));
 
 		while ((received < populationSize) && !errors) {
 			try {

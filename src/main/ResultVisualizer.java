@@ -8,6 +8,8 @@ import individual.GenotypeFileManager;
 import individual.Individual;
 import population.HistoricalMarkingManager;
 import population.MarkingsFileManager;
+import population.Population;
+import population.PopulationSerializationManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,20 +24,29 @@ public class ResultVisualizer {
     private static String inputFolder;
     private static HistoricalMarkingManager mngr;
     private static Individual individual;
+    private static Population population;
     private static ArrayList<SocketConnectionParameters> scp;
     private static final int FIRST_SOCKET = 2000;
+
+    private static final int index = 31;
 
 
     public static void main(String[] args) throws Exception {
         initSocketConnectionParameters();
         loadInput();
         loadResult();
-        Evaluator evaluator = new Evaluator(scp.get(0), individual, TimeConstants.EVALUATOR_TIMELIMIT, TimeConstants.EVALUATION_PERIOD);
-        individual = evaluator.call();
-        System.out.println("Fitness: " + individual.getFitness());
+        population = loadPopulation(index);
+        Evaluator evaluator;//= new Evaluator(scp.get(0), individual, TimeConstants.EVALUATOR_TIMELIMIT, TimeConstants.EVALUATION_PERIOD);
+        //individual = evaluator.call();
+        System.out.println("Fitness: " + population.getBest().getFitness());
         loadConfirmation();
         evaluator = new Evaluator(scp.get(0), individual, 360 * TimeConstants.EVALUATOR_TIMELIMIT, TimeConstants.EVALUATION_PERIOD);
         evaluator.call();
+    }
+
+    private static Population loadPopulation(int index) throws FileNotFoundException {
+        String populationFileName = inputFolder + "population_" + index + ".ser";
+        return PopulationSerializationManager.importFromFile(populationFileName);
     }
 
     private static void loadConfirmation() {
@@ -46,12 +57,14 @@ public class ResultVisualizer {
             System.exit(0);
     }
 
+
     private static void loadResult() throws FileNotFoundException, UnsupportedEncodingException {
-        String markingsFileName = inputFolder + "markings_20.txt";
-        String genotypeFileName = inputFolder + "genotype_20.txt";
+        String markingsFileName = inputFolder + "markings_" + index + ".txt";
+        String genotypeFileName = inputFolder + "genotype_" + index + ".txt";
         mngr = MarkingsFileManager.readFromFile(markingsFileName);
         Genotype g = GenotypeFileManager.readFromFile(genotypeFileName);
         Individual i = new Individual(g, mngr);
+
         individual = i;
     }
 
